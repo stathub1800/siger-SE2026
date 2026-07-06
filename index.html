@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SE2026 Lampung — Analisis Non-Respons & Indikasi Moral Hazard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#12161c; --ink2:#3a4149; --muted:#7a828c; --line:#e6e8ec; --bg:#f7f8fa; --card:#ffffff;
+    --ada:#0f8a6a;      /* ditemukan  */
+    --baru:#2563eb;     /* baru       */
+    --miss:#dc2626;     /* tidak ditemukan */
+    --tutup:#b45309;    /* tutup      */
+    --warn:#fef2f2; --warnline:#fecaca;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 22px 60px}
+  header.top{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:22px}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--miss);font-weight:700}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 30px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+  .kpi .lab{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .kpi .val{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+  .kpi .foot{font-size:11.5px;color:var(--ink2);margin-top:2px}
+  .kpi.alert{background:var(--warn);border-color:var(--warnline)}
+  .kpi.alert .val{color:var(--miss)}
+  section{margin:34px 0}
+  .sechead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .sechead h2{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .sechead .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#eef1f4;color:var(--ink2)}
+  .secnote{color:var(--ink2);font-size:13px;max-width:760px;margin-bottom:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .panel h3{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:12px}
+  .chartbox{position:relative;height:360px}
+  .chartbox.tall{height:430px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
+  thead th{cursor:pointer;user-select:none;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:2px solid var(--line)}
+  thead th:hover{color:var(--ink)}
+  tbody tr:hover{background:#fafbfc}
+  .tablescroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  .flag{display:inline-block;padding:2px 7px;border-radius:6px;font-weight:700;font-size:11px}
+  .f-hi{background:#fee2e2;color:#b91c1c}
+  .f-mid{background:#fef3c7;color:#92400e}
+  .f-lo{background:#dcfce7;color:#166534}
+  .callout{background:var(--warn);border:1px solid var(--warnline);border-left:4px solid var(--miss);border-radius:10px;padding:14px 16px;margin-top:16px;font-size:13px;color:#7f1d1d}
+  .callout b{color:var(--miss)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:10px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px}
+  @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Sensus Ekonomi 2026 · Quality Gate Provinsi Lampung</div>
+    <h1>Analisis Non-Respons Pendataan Keluarga &amp; Usaha</h1>
+    <div class="sub">Struktur disposisi lapangan per kabupaten/kota &middot; fokus: rasio <b>tidak ditemukan</b> sebagai indikator risiko kualitas &amp; potensi <i>moral hazard</i> petugas</div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <!-- KELUARGA -->
+  <section>
+    <div class="sechead"><h2>1 · Keluarga</h2><span class="tag">yang "ada" = ditemukan + baru</span></div>
+    <div class="secnote">Rasio <b>tidak ditemukan</b> = tidak ditemukan &divide; total disposisi keluarga. Semakin tinggi, semakin besar porsi prelist DTSEN yang gagal ditemukan di lapangan.</div>
+    <div class="grid2">
+      <div class="panel"><h3>Rasio keluarga tidak ditemukan (%)</h3><div class="chartbox"><canvas id="kelNf"></canvas></div></div>
+      <div class="panel"><h3>Komposisi disposisi keluarga</h3><div class="chartbox"><canvas id="kelComp"></canvas></div>
+        <div class="legend"><span><i class="dot" style="background:var(--ada)"></i>Ditemukan</span><span><i class="dot" style="background:var(--baru)"></i>Baru</span><span><i class="dot" style="background:var(--miss)"></i>Tidak ditemukan</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAHA -->
+  <section>
+    <div class="sechead"><h2>2 · Usaha</h2><span class="tag">yang "ada" = ditemukan + baru</span></div>
+    <div class="secnote">Untuk usaha ditambahkan disposisi <b>tutup</b>. "Tidak ditemukan" = tidak berhasil dilokalisir sama sekali (paling murah untuk difabrikasi); "tutup" = usaha terverifikasi sudah tidak beroperasi.</div>
+    <div class="grid2">
+      <div class="panel"><h3>Rasio usaha tidak ditemukan (%)</h3><div class="chartbox"><canvas id="ushNf"></canvas></div></div>
+      <div class="panel"><h3>Komposisi disposisi usaha</h3><div class="chartbox"><canvas id="ushComp"></canvas></div>
+        <div class="legend"><span><i class="dot" style="background:var(--ada)"></i>Ditemukan</span><span><i class="dot" style="background:var(--baru)"></i>Baru</span><span><i class="dot" style="background:var(--miss)"></i>Tidak ditemukan</span><span><i class="dot" style="background:var(--tutup)"></i>Tutup</span></div>
+      </div>
+    </div>
+    <div class="callout" id="blCallout"></div>
+  </section>
+
+  <!-- QUADRANT -->
+  <section>
+    <div class="sechead"><h2>3 · Peta risiko moral hazard</h2><span class="tag">tidak ditemukan vs. usaha baru</span></div>
+    <div class="secnote">Sumbu-X = rasio tidak ditemukan (usaha). Sumbu-Y = <b>% baru dari yang "ada"</b> — proksi kerja riil (menemukan unit di luar prelist tetap butuh pencacahan penuh). Ukuran gelembung = volume data masuk.
+      <br><b style="color:var(--miss)">Kanan-bawah</b> (tinggi tidak ditemukan + rendah baru) = pola paling konsisten dengan moral hazard. <b style="color:var(--ink2)">Kanan-atas</b> = lebih konsisten dengan prelist basi (petugas tetap menemukan unit baru).</div>
+    <div class="panel"><div class="chartbox tall"><canvas id="quad"></canvas></div></div>
+  </section>
+
+  <!-- TABLE -->
+  <section>
+    <div class="sechead"><h2>4 · Tabel lengkap</h2><span class="tag">klik header untuk urut</span></div>
+    <div class="tablescroll">
+      <table id="tbl">
+        <thead><tr>
+          <th data-k="kab">Kab/Kota</th>
+          <th data-k="data_masuk">Data masuk</th>
+          <th data-k="kel_ada">Kel. ada</th>
+          <th data-k="k_notfound">Kel. TD</th>
+          <th data-k="kel_nf">Kel. %TD</th>
+          <th data-k="ush_ada">Ush. ada</th>
+          <th data-k="u_notfound">Ush. TD</th>
+          <th data-k="u_tutup">Ush. tutup</th>
+          <th data-k="ush_nf">Ush. %TD</th>
+          <th data-k="ush_baru_share">Ush. %baru</th>
+          <th data-k="risk">Flag</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="legend"><span><i class="dot" style="background:#dc2626"></i>Flag berbasis rasio tidak ditemukan usaha: tinggi &ge;45% · sedang 30–45% · rendah &lt;30%. TD = tidak ditemukan.</span></div>
+  </section>
+
+  <footer>
+    Sumber: rekap disposisi lapangan SE2026 & volume data masuk per kabupaten/kota (agregat provinsi 1.253.873). "Tidak ditemukan" bersifat <i>proksi</i> risiko — bukan bukti kecurangan. Validasi definitif memerlukan analisis durasi pengisian, jumlah kunjungan, sebaran per-pencacah, dan klaster spasial di data warehouse (root_table / se2026_nested).
+  </footer>
+</div>
+
+<script>
+const RAW = [
+ ["LAMPUNG BARAT",1801,15772,2847,3747,0,14755,8420,7293,2817,60,42244],
+ ["TANGGAMUS",1802,30481,6229,7574,0,21293,16308,17624,9059,221,86135],
+ ["LAMPUNG SELATAN",1803,44183,9885,14732,0,17138,16000,27770,8384,72,149027],
+ ["LAMPUNG TIMUR",1804,48191,6839,16430,0,35490,24854,37112,11699,273,165510],
+ ["LAMPUNG TENGAH",1805,60878,8354,26070,0,42243,28588,57383,10020,185,207736],
+ ["LAMPUNG UTARA",1806,26562,4829,16281,0,12829,11041,22946,3552,56,98043],
+ ["WAY KANAN",1807,19782,3396,8202,0,12650,10062,17463,2368,30,69789],
+ ["TULANG BAWANG",1808,15579,3121,10178,0,10036,6978,7001,4443,56,54620],
+ ["PESAWARAN",1809,23460,4191,8131,0,16923,9977,8849,7937,147,64661],
+ ["PRINGSEWU",1810,20704,2720,3997,0,13632,8164,4701,7081,106,52869],
+ ["MESUJI",1811,13465,2842,6576,0,9942,6569,6635,3792,85,39627],
+ ["TULANG BAWANG BARAT",1812,15268,2818,6858,0,12228,7705,4336,3796,41,44354],
+ ["PESISIR BARAT",1813,6422,1564,1798,0,5198,2925,3473,2220,23,18277],
+ ["BANDAR LAMPUNG",1871,30217,10010,18184,0,3095,10278,20202,574,43,136863],
+ ["METRO",1872,7030,1031,2809,0,3257,2326,3003,1448,83,24118],
+];
+const D = RAW.map(r=>{
+  const [kab,kode,kd,kb,ktd,kg,ud,ub,utd,ut,ug,dm]=r;
+  const kel_tot=kd+kb+ktd+kg, kel_ada=kd+kb;
+  const ush_tot=ud+ub+utd+ut+ug, ush_ada=ud+ub;
+  return {kab,kode,k_d:kd,k_b:kb,k_notfound:ktd,kel_ada,kel_tot,
+    kel_nf:100*ktd/kel_tot,
+    u_d:ud,u_b:ub,u_notfound:utd,u_tutup:ut,ush_ada,ush_tot,
+    ush_nf:100*utd/ush_tot,
+    ush_hil:100*(utd+ut)/ush_tot,
+    ush_baru_share:100*ub/ush_ada,
+    data_masuk:dm};
+});
+const nfmt=n=>n.toLocaleString('id-ID');
+const p1=n=>n.toFixed(1);
+
+// province aggregates
+const sum=k=>D.reduce((a,d)=>a+d[k],0);
+const provKelNf=100*sum('k_notfound')/(sum('kel_tot'));
+const provUshNf=100*sum('u_notfound')/(sum('ush_tot'));
+const provUshHil=100*(sum('u_notfound')+sum('u_tutup'))/sum('ush_tot');
+
+document.getElementById('kpis').innerHTML=`
+ <div class="kpi"><div class="lab">Keluarga "ada"</div><div class="val">${nfmt(sum('kel_ada'))}</div><div class="foot">ditemukan + baru</div></div>
+ <div class="kpi alert"><div class="lab">Keluarga tidak ditemukan</div><div class="val">${p1(provKelNf)}%</div><div class="foot">${nfmt(sum('k_notfound'))} keluarga · ~1 dari 4</div></div>
+ <div class="kpi"><div class="lab">Usaha "ada"</div><div class="val">${nfmt(sum('ush_ada'))}</div><div class="foot">ditemukan + baru</div></div>
+ <div class="kpi alert"><div class="lab">Usaha tidak ditemukan</div><div class="val">${p1(provUshNf)}%</div><div class="foot">${nfmt(sum('u_notfound'))} usaha · ${p1(provUshHil)}% + tutup</div></div>`;
+
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.color="#3a4149";
+const cssv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function hbar(id,key,color,avg){
+  const s=[...D].sort((a,b)=>b[key]-a[key]);
+  new Chart(document.getElementById(id),{type:'bar',data:{
+    labels:s.map(d=>d.kab),
+    datasets:[{data:s.map(d=>d[key]),backgroundColor:s.map(d=>d[key]>=avg?color:color+'99'),borderRadius:4,barThickness:15}]
+  },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+p1(c.parsed.x)+'%'}},
+      annotation:false},
+    scales:{x:{grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10}}}}
+  }});
+}
+hbar('kelNf','kel_nf',cssv('--miss'),provKelNf);
+hbar('ushNf','ush_nf',cssv('--miss'),provUshNf);
+
+function stacked(id,keys,colors){
+  const order=[...D].sort((a,b)=>b.data_masuk-a.data_masuk);
+  new Chart(document.getElementById(id),{type:'bar',data:{
+    labels:order.map(d=>d.kab),
+    datasets:keys.map((k,i)=>({label:k.l,data:order.map(d=>d[k.k]),backgroundColor:colors[i],borderRadius:2,barThickness:15}))
+  },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+nfmt(c.parsed.x)}}},
+    scales:{x:{stacked:true,grid:{color:'#eef0f3'}},y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}
+  }});
+}
+stacked('kelComp',[{l:'Ditemukan',k:'k_d'},{l:'Baru',k:'k_b'},{l:'Tidak ditemukan',k:'k_notfound'}],
+  [cssv('--ada'),cssv('--baru'),cssv('--miss')]);
+stacked('ushComp',[{l:'Ditemukan',k:'u_d'},{l:'Baru',k:'u_b'},{l:'Tidak ditemukan',k:'u_notfound'},{l:'Tutup',k:'u_tutup'}],
+  [cssv('--ada'),cssv('--baru'),cssv('--miss'),cssv('--tutup')]);
+
+// quadrant scatter
+const maxDm=Math.max(...D.map(d=>d.data_masuk));
+new Chart(document.getElementById('quad'),{type:'bubble',data:{datasets:D.map(d=>({
+  label:d.kab,
+  data:[{x:d.ush_nf,y:d.ush_baru_share,r:8+22*d.data_masuk/maxDm}],
+  backgroundColor:(d.ush_nf>=provUshNf && d.ush_baru_share< 42)?'rgba(220,38,38,.55)':'rgba(37,99,235,.45)',
+  borderColor:(d.ush_nf>=provUshNf && d.ush_baru_share<42)?'#dc2626':'#2563eb',borderWidth:1.5
+}))},options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>c[0].dataset.label,
+    label:c=>[' tidak ditemukan: '+p1(c.parsed.x)+'%',' baru: '+p1(c.parsed.y)+'%',' data masuk: '+nfmt(D.find(d=>d.kab===c.dataset.label).data_masuk)]}}},
+  scales:{
+    x:{title:{display:true,text:'Rasio usaha TIDAK DITEMUKAN (%) →  makin kanan makin banyak hilang'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},
+    y:{title:{display:true,text:'% usaha BARU dari yang ada  →  makin bawah makin sedikit kerja riil'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}}
+  }},
+  plugins:[{id:'lbl',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 9.5px Inter';ctx.fillStyle='#12161c';ctx.textAlign='center';
+    c.data.datasets.forEach((ds,i)=>{const m=c.getDatasetMeta(i).data[0];ctx.fillText(ds.label.replace('LAMPUNG','LMP.').slice(0,11),m.x,m.y-m.options.radius-3)});ctx.restore();},
+    afterDraw(c){const xa=c.scales.x,ya=c.scales.y;const ctx=c.ctx;ctx.save();ctx.strokeStyle='#dc262655';ctx.setLineDash([5,4]);
+      const xm=xa.getPixelForValue(provUshNf);ctx.beginPath();ctx.moveTo(xm,ya.top);ctx.lineTo(xm,ya.bottom);ctx.stroke();
+      const ym=ya.getPixelForValue(42);ctx.beginPath();ctx.moveTo(xa.left,ym);ctx.lineTo(xa.right,ym);ctx.stroke();ctx.restore();}}]
+});
+
+// BL callout
+const bl=D.find(d=>d.kode===1871);
+document.getElementById('blCallout').innerHTML=`<b>Anomali Bandar Lampung (usaha):</b> hanya ${nfmt(bl.u_d)} usaha prelist ditemukan, tapi ${nfmt(bl.u_notfound)} tidak ditemukan (${p1(bl.ush_nf)}%) dan ${nfmt(bl.u_b)} baru. Artinya ${p1(bl.ush_baru_share)}% usaha "ada" berasal dari unit baru, bukan prelist. Pola ekstrem ini lebih menunjuk ke <b>prelist SBR/Matchapro yang salah lokasi/basi</b> di ibukota — namun tetap prioritas nomor satu untuk supervisi lapangan.`;
+
+// table
+const tb=document.querySelector('#tbl tbody');
+function risk(d){if(d.ush_nf>=45)return['f-hi','Tinggi'];if(d.ush_nf>=30)return['f-mid','Sedang'];return['f-lo','Rendah'];}
+function render(rows){tb.innerHTML=rows.map(d=>{const[c,t]=risk(d);return `<tr>
+  <td>${d.kab}</td><td>${nfmt(d.data_masuk)}</td>
+  <td>${nfmt(d.kel_ada)}</td><td>${nfmt(d.k_notfound)}</td><td>${p1(d.kel_nf)}%</td>
+  <td>${nfmt(d.ush_ada)}</td><td>${nfmt(d.u_notfound)}</td><td>${nfmt(d.u_tutup)}</td>
+  <td>${p1(d.ush_nf)}%</td><td>${p1(d.ush_baru_share)}%</td>
+  <td><span class="flag ${c}">${t}</span></td></tr>`}).join('');}
+let sortDir={};
+render([...D].sort((a,b)=>b.ush_nf-a.ush_nf));
+document.querySelectorAll('#tbl thead th').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k;sortDir[k]=!sortDir[k];
+  const key=k==='risk'?'ush_nf':k;
+  const rows=[...D].sort((a,b)=>{const av=a[key],bv=b[key];
+    if(typeof av==='string')return sortDir[k]?av.localeCompare(bv):bv.localeCompare(av);
+    return sortDir[k]?av-bv:bv-av;});
+  render(rows);
+}));
+</script>
+</body>
+</html>
