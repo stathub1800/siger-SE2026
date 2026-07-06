@@ -97,7 +97,7 @@
   <section>
     <div class="sechead"><h2>3 · Peta risiko moral hazard</h2><span class="tag">tidak ditemukan vs. usaha baru</span></div>
     <div class="secnote">Sumbu-X = rasio tidak ditemukan (usaha). Sumbu-Y = <b>% baru dari yang "ada"</b> — proksi kerja riil (menemukan unit di luar prelist tetap butuh pencacahan penuh). Ukuran gelembung = volume data masuk.
-      <br><b style="color:var(--miss)">Kanan-bawah</b> (tinggi tidak ditemukan + rendah baru) = pola paling konsisten dengan moral hazard. <b style="color:var(--ink2)">Kanan-atas</b> = lebih konsisten dengan prelist basi (petugas tetap menemukan unit baru).</div>
+      <br><b style="color:var(--miss)">Kanan-bawah</b> (tinggi tidak ditemukan + rendah baru) = pola paling konsisten dengan moral hazard. <b style="color:var(--ink2)">Kanan-atas</b> = lebih konsisten dengan prelist kedaluwarsa (petugas tetap menemukan unit baru).</div>
     <div class="panel"><div class="chartbox tall"><canvas id="quad"></canvas></div></div>
   </section>
 
@@ -232,7 +232,7 @@ new Chart(document.getElementById('quad'),{type:'bubble',data:{datasets:D.map(d=
 
 // BL callout
 const bl=D.find(d=>d.kode===1871);
-document.getElementById('blCallout').innerHTML=`<b>Anomali Bandar Lampung (usaha):</b> hanya ${nfmt(bl.u_d)} usaha prelist ditemukan, tapi ${nfmt(bl.u_notfound)} tidak ditemukan (${p1(bl.ush_nf)}%) dan ${nfmt(bl.u_b)} baru. Artinya ${p1(bl.ush_baru_share)}% usaha "ada" berasal dari unit baru, bukan prelist. Pola ekstrem ini lebih menunjuk ke <b>prelist SBR/Matchapro yang salah lokasi/basi</b> di ibukota — namun tetap prioritas nomor satu untuk supervisi lapangan.`;
+document.getElementById('blCallout').innerHTML=`<b>Anomali Bandar Lampung (usaha):</b> hanya ${nfmt(bl.u_d)} usaha prelist ditemukan, tapi ${nfmt(bl.u_notfound)} tidak ditemukan (${p1(bl.ush_nf)}%) dan ${nfmt(bl.u_b)} baru. Artinya ${p1(bl.ush_baru_share)}% usaha "ada" berasal dari unit baru, bukan prelist. Pola ekstrem ini lebih menunjuk ke <b>prelist SBR/Matchapro yang salah lokasi/kedaluwarsa</b> di ibukota — namun tetap prioritas nomor satu untuk supervisi lapangan.`;
 
 // table
 const tb=document.querySelector('#tbl tbody');
