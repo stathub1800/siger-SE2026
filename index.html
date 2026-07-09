@@ -3,38 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SE2026 Lampung — Realisasi Prelist Usaha & Kualitas Register</title>
+<title>SE2026 Lampung — Kondisi Pendataan Keluarga & Usaha</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root{
     --ink:#12161c;--ink2:#3a4149;--muted:#7a828c;--line:#e6e8ec;--bg:#f7f8fa;--card:#fff;
-    --ada:#0f8a6a;--baru:#2563eb;--miss:#dc2626;--tutup:#b45309;
+    --ada:#0f8a6a;--baru:#2563eb;--miss:#dc2626;--tutup:#b45309;--mng:#64748b;
     --warn:#fef2f2;--warnline:#fecaca;--good:#ecfdf5;--goodline:#a7f3d0;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:28px 22px 60px}
-  header.top{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:8px}
+  header.top{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:18px}
   .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--miss);font-weight:700}
-  h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px}
+  h1{font-size:25px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px}
   .sub{color:var(--muted);font-size:13.5px}
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 8px}
+  .tabs{display:inline-flex;background:#eef1f4;border-radius:10px;padding:4px;margin:18px 0 2px;gap:4px}
+  .tab{border:none;background:transparent;font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);padding:9px 22px;border-radius:8px;cursor:pointer;transition:.15s}
+  .tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 8px}
   .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
   .kpi .lab{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
-  .kpi .val{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+  .kpi .val{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
   .kpi .foot{font-size:11.5px;color:var(--ink2);margin-top:2px}
-  .kpi.alert{background:var(--warn);border-color:var(--warnline)}
-  .kpi.alert .val{color:var(--miss)}
-  section{margin:34px 0}
+  .kpi.alert{background:var(--warn);border-color:var(--warnline)}.kpi.alert .val{color:var(--miss)}
+  .kpi.ok{background:var(--good);border-color:var(--goodline)}.kpi.ok .val{color:var(--ada)}
+  section{margin:30px 0}
   .sechead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-  .sechead h2{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .sechead h2{font-size:16px;font-weight:800;letter-spacing:-.01em}
   .sechead .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#eef1f4;color:var(--ink2)}
-  .secnote{color:var(--ink2);font-size:13px;max-width:800px;margin-bottom:14px}
+  .secnote{color:var(--ink2);font-size:13px;max-width:820px;margin-bottom:14px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
   .panel h3{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:12px}
-  .chartbox{position:relative;height:380px}
-  .chartbox.tall{height:460px}
+  .chartbox{position:relative;height:380px}.chartbox.tall{height:460px}
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th,td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
   th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
@@ -44,12 +46,13 @@
   .tablescroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
   .flag{display:inline-block;padding:2px 7px;border-radius:6px;font-weight:700;font-size:11px}
   .f-hi{background:#fee2e2;color:#b91c1c}.f-mid{background:#fef3c7;color:#92400e}.f-lo{background:#dcfce7;color:#166534}
-  .callout{background:var(--warn);border:1px solid var(--warnline);border-left:4px solid var(--miss);border-radius:10px;padding:14px 16px;margin-top:16px;font-size:13px;color:#7f1d1d}
-  .callout.g{background:var(--good);border-color:var(--goodline);border-left-color:var(--ada);color:#065f46}
-  .callout b{color:inherit}
+  .callout{border-radius:10px;padding:14px 16px;margin-top:16px;font-size:13px}
+  .callout.r{background:var(--warn);border:1px solid var(--warnline);border-left:4px solid var(--miss);color:#7f1d1d}
+  .callout.g{background:var(--good);border:1px solid var(--goodline);border-left:4px solid var(--ada);color:#065f46}
   .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:10px}
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .view{display:none}.view.active{display:block}
   footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px}
   @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
 </style>
@@ -58,150 +61,244 @@
 <div class="wrap">
   <header class="top">
     <div class="eyebrow">Sensus Ekonomi 2026 · Quality Gate Provinsi Lampung</div>
-    <h1>Realisasi Prelist Usaha &amp; Kualitas Register SBR</h1>
-    <div class="sub">Seberapa banyak target prelist yang benar-benar terkonfirmasi di lapangan &middot; hit rate, tidak ditemukan, dan pemisahan pola per kabupaten/kota</div>
+    <h1>Kondisi Pendataan Keluarga &amp; Usaha</h1>
+    <div class="sub">Ada di lapangan = ditemukan + baru &middot; Tidak ada di lapangan = tidak ditemukan + (meninggal/tutup) + (tidak eligible/ganda)</div>
+    <div class="tabs">
+      <button class="tab active" data-t="kel" onclick="switchTab('kel')">Keluarga</button>
+      <button class="tab" data-t="ush" onclick="switchTab('ush')">Usaha</button>
+    </div>
   </header>
 
-  <div class="kpis" id="kpis"></div>
-  <div class="callout" id="headline"></div>
+  <!-- ============ KELUARGA ============ -->
+  <div id="view-kel" class="view active">
+    <div class="kpis" id="kpi-kel"></div>
+    <div class="callout g" id="head-kel"></div>
 
-  <!-- HIT RATE -->
-  <section>
-    <div class="sechead"><h2>1 · Hit rate prelist</h2><span class="tag">ditemukan ÷ target</span></div>
-    <div class="secnote">Persentase target prelist yang usahanya benar-benar dikonfirmasi ada. <b>&gt;100%</b> berarti register SBR justru <i>terlalu kecil</i> (lapangan lebih padat). <b>Rendah</b> berarti register besar tapi gagal dikonfirmasi.</div>
-    <div class="grid2">
-      <div class="panel"><h3>Hit rate per kabupaten (%)</h3><div class="chartbox"><canvas id="hit"></canvas></div></div>
-      <div class="panel"><h3>Tidak ditemukan dalam prelist terproses (%)</h3><div class="chartbox"><canvas id="td"></canvas></div></div>
-    </div>
-  </section>
+    <section>
+      <div class="sechead"><h2>Sinyal per kabupaten</h2><span class="tag">urut nilai</span></div>
+      <div class="secnote"><b>%TD</b> (tidak ditemukan dalam prelist) = sinyal paling tajam untuk potensi moral hazard. <b>%Tidak ada</b> = TD + meninggal + tidak eligible (kualitas prelist DTSEN).</div>
+      <div class="grid2">
+        <div class="panel"><h3>Tidak ditemukan dalam prelist (%)</h3><div class="chartbox"><canvas id="kel-td"></canvas></div></div>
+        <div class="panel"><h3>Tidak ada di lapangan (%)</h3><div class="chartbox"><canvas id="kel-gg"></canvas></div></div>
+      </div>
+    </section>
 
-  <!-- QUADRANT -->
-  <section>
-    <div class="sechead"><h2>2 · Peta pemisah pola</h2><span class="tag">hit rate × tidak ditemukan</span></div>
-    <div class="secnote">Sumbu-X = hit rate. Sumbu-Y = % tidak ditemukan. Ukuran gelembung = target prelist.
-      <b style="color:var(--ada)">Kanan-bawah</b> = sehat (register kekecilan, lapangan padat). <b style="color:var(--miss)">Kiri-atas</b> = target besar tapi konfirmasi rendah → register belum dimutakhirkan / prioritas audit.</div>
-    <div class="panel"><div class="chartbox tall"><canvas id="quad"></canvas></div></div>
-    <div class="callout" id="bl"></div>
-  </section>
+    <section>
+      <div class="sechead"><h2>Peta pemisah pola</h2><span class="tag">tidak ditemukan × keluarga baru</span></div>
+      <div class="secnote">Sumbu-X = % tidak ditemukan. Sumbu-Y = % keluarga <b>baru</b> dari yang ada (proksi mobilitas/kerja riil). Ukuran gelembung = volume prelist.
+        <b style="color:var(--miss)">Kanan-bawah</b> (TD tinggi + baru rendah) = pola paling konsisten dengan moral hazard. <b style="color:var(--ink2)">Kanan-atas</b> = mobilitas penduduk / DTSEN tertinggal (petugas tetap menemukan keluarga baru).</div>
+      <div class="panel"><div class="chartbox tall"><canvas id="kel-quad"></canvas></div></div>
+    </section>
 
-  <!-- COMPOSITION -->
-  <section>
-    <div class="sechead"><h2>3 · Komposisi disposisi</h2><span class="tag">urut volume</span></div>
-    <div class="panel"><div class="chartbox tall"><canvas id="comp"></canvas></div>
-      <div class="legend"><span><i class="dot" style="background:var(--ada)"></i>Ditemukan</span><span><i class="dot" style="background:var(--baru)"></i>Baru</span><span><i class="dot" style="background:var(--miss)"></i>Tidak ditemukan</span><span><i class="dot" style="background:var(--tutup)"></i>Tutup</span></div>
-    </div>
-  </section>
+    <section>
+      <div class="sechead"><h2>Komposisi disposisi keluarga</h2><span class="tag">urut volume</span></div>
+      <div class="panel"><div class="chartbox tall"><canvas id="kel-comp"></canvas></div>
+        <div class="legend"><span><i class="dot" style="background:var(--ada)"></i>Ditemukan</span><span><i class="dot" style="background:var(--baru)"></i>Baru</span><span><i class="dot" style="background:var(--miss)"></i>Tidak ditemukan</span><span><i class="dot" style="background:var(--mng)"></i>Meninggal</span></div>
+      </div>
+    </section>
 
-  <!-- TABLE -->
-  <section>
-    <div class="sechead"><h2>4 · Tabel lengkap</h2><span class="tag">klik header untuk urut</span></div>
-    <div class="tablescroll">
-      <table id="tbl"><thead><tr>
-        <th data-k="kab">Kab/Kota</th><th data-k="target">Target</th><th data-k="dt">Ditemukan</th>
-        <th data-k="baru">Baru</th><th data-k="td">TD</th><th data-k="tutup">Tutup</th>
-        <th data-k="hit">Hit rate</th><th data-k="tdrate">%TD prelist</th>
-        <th data-k="bpd">Baru/ditemukan</th><th data-k="cls">Pola</th>
-      </tr></thead><tbody></tbody></table>
-    </div>
-  </section>
+    <section>
+      <div class="sechead"><h2>Tabel keluarga</h2><span class="tag">klik header untuk urut</span></div>
+      <div class="tablescroll"><table id="tbl-kel"><thead><tr>
+        <th data-k="kab">Kab/Kota</th><th data-k="exist">Ada di lapangan</th><th data-k="dt">Ditemukan</th>
+        <th data-k="baru">Baru</th><th data-k="td">TD</th><th data-k="mng">Meninggal</th>
+        <th data-k="pada">%Ada prelist</th><th data-k="pgg">%Tidak ada</th><th data-k="ptd">%TD</th><th data-k="fl">Flag</th>
+      </tr></thead><tbody></tbody></table></div>
+      <div class="legend"><span><i class="dot" style="background:#dc2626"></i>Flag berbasis %TD: tinggi &ge;33% · sedang 25–33% · rendah &lt;25%.</span></div>
+    </section>
+  </div>
+
+  <!-- ============ USAHA ============ -->
+  <div id="view-ush" class="view">
+    <div class="kpis" id="kpi-ush"></div>
+    <div class="callout r" id="head-ush"></div>
+
+    <section>
+      <div class="sechead"><h2>Sinyal per kabupaten</h2><span class="tag">urut nilai</span></div>
+      <div class="secnote"><b>Hit rate</b> = ditemukan ÷ target prelist. <b>%Tidak ada</b> = TD + tutup + ganda. <b>%TD</b> = sinyal moral hazard.</div>
+      <div class="grid2">
+        <div class="panel"><h3>Hit rate prelist (%)</h3><div class="chartbox"><canvas id="ush-hit"></canvas></div></div>
+        <div class="panel"><h3>Tidak ada di lapangan (%)</h3><div class="chartbox"><canvas id="ush-gg"></canvas></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sechead"><h2>Peta pemisah pola</h2><span class="tag">hit rate × tidak ditemukan</span></div>
+      <div class="secnote">Ukuran gelembung = target prelist. <b style="color:var(--ada)">Kanan-bawah</b> = sehat (register kekecilan). <b style="color:var(--miss)">Kiri-atas</b> = target besar, konfirmasi rendah → prioritas audit.</div>
+      <div class="panel"><div class="chartbox tall"><canvas id="ush-quad"></canvas></div></div>
+      <div class="callout r" id="bl-ush"></div>
+    </section>
+
+    <section>
+      <div class="sechead"><h2>Komposisi disposisi usaha</h2><span class="tag">urut target</span></div>
+      <div class="panel"><div class="chartbox tall"><canvas id="ush-comp"></canvas></div>
+        <div class="legend"><span><i class="dot" style="background:var(--ada)"></i>Ditemukan</span><span><i class="dot" style="background:var(--baru)"></i>Baru</span><span><i class="dot" style="background:var(--miss)"></i>Tidak ditemukan</span><span><i class="dot" style="background:var(--tutup)"></i>Tutup</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sechead"><h2>Tabel usaha</h2><span class="tag">klik header untuk urut</span></div>
+      <div class="tablescroll"><table id="tbl-ush"><thead><tr>
+        <th data-k="kab">Kab/Kota</th><th data-k="target">Target</th><th data-k="exist">Ada di lapangan</th>
+        <th data-k="dt">Ditemukan</th><th data-k="td">TD</th><th data-k="tutup">Tutup</th>
+        <th data-k="hit">Hit rate</th><th data-k="pgg">%Tidak ada</th><th data-k="ptd">%TD</th><th data-k="fl">Pola</th>
+      </tr></thead><tbody></tbody></table></div>
+    </section>
+  </div>
 
   <footer>
-    Sumber: rekap disposisi usaha SE2026 + target prelist per kabupaten/kota (target provinsi 754.653). Hit rate = ditemukan ÷ target prelist. %TD prelist = tidak ditemukan ÷ (ditemukan+TD+tutup+ganda). "Tidak ditemukan" adalah proksi risiko, bukan bukti kecurangan — validasi lewat durasi, kunjungan, dan sebaran per-pencacah di data warehouse.
+    Keluarga: total prelist diproses 538.574. Usaha: target prelist 754.653. "Tidak ditemukan" adalah proksi risiko, bukan bukti kecurangan — validasi lewat durasi, kunjungan, dan sebaran per-pencacah di data warehouse. Tidak ada di lapangan = ukuran kualitas register; TD-saja = sinyal moral hazard.
   </footer>
 </div>
 
 <script>
-const RAW=[
- ["LAMPUNG BARAT",1801,11231,14545,8298,7225,2786,59],
- ["TANGGAMUS",1802,57473,21061,16126,17543,9034,219],
- ["LAMPUNG SELATAN",1803,94123,16801,15762,27663,8338,72],
- ["LAMPUNG TIMUR",1804,127105,35096,24656,36969,11636,273],
- ["LAMPUNG TENGAH",1805,131143,41259,28032,57030,9941,182],
- ["LAMPUNG UTARA",1806,63918,12777,11003,22927,3545,55],
- ["WAY KANAN",1807,41330,12393,9906,17399,2357,30],
- ["TULANG BAWANG",1808,18103,9843,6870,6943,4412,56],
- ["PESAWARAN",1809,17312,16679,9854,8787,7908,147],
- ["PRINGSEWU",1810,21252,13362,8018,4663,7035,105],
- ["MESUJI",1811,10193,9866,6549,6608,3788,85],
- ["TULANG BAWANG BARAT",1812,9436,12062,7637,4295,3768,41],
- ["PESISIR BARAT",1813,4925,5141,2891,3463,2210,23],
- ["BANDAR LAMPUNG",1871,130762,2908,9907,20159,563,42],
- ["METRO",1872,16347,3155,2273,2986,1422,83],
-];
-const D=RAW.map(r=>{const[kab,kode,target,dt,baru,td,tutup,ganda]=r;
-  const pldisp=dt+td+tutup+ganda;
-  return{kab,kode,target,dt,baru,td,tutup,ganda,pldisp,
-    hit:100*dt/target, tdrate:100*td/pldisp, bpd:baru/dt, cakup:100*pldisp/target};});
 const nf=n=>Math.round(n).toLocaleString('id-ID'); const p1=n=>n.toFixed(1);
-const sum=k=>D.reduce((a,d)=>a+d[k],0);
-const provHit=100*sum('dt')/sum('target');
-const provTD=100*sum('td')/sum('pldisp');
-
-document.getElementById('kpis').innerHTML=`
- <div class="kpi"><div class="lab">Target prelist</div><div class="val">${nf(sum('target'))}</div><div class="foot">usaha di register SBR</div></div>
- <div class="kpi alert"><div class="lab">Terkonfirmasi ada</div><div class="val">${p1(provHit)}%</div><div class="foot">${nf(sum('dt'))} ditemukan dari target</div></div>
- <div class="kpi alert"><div class="lab">Tidak ditemukan</div><div class="val">${nf(sum('td'))}</div><div class="foot">> ditemukan (${nf(sum('dt'))})</div></div>
- <div class="kpi"><div class="lab">Usaha baru + tutup</div><div class="val">${nf(sum('baru'))}</div><div class="foot">baru · ${nf(sum('tutup'))} tutup</div></div>`;
-
-document.getElementById('headline').innerHTML=`<b>Sinyal utama:</b> dari ${nf(sum('target'))} target prelist provinsi, hanya <b>${p1(provHit)}%</b> yang terkonfirmasi ada. Di dalam prelist yang sudah diproses, <b>tidak ditemukan (${nf(sum('td'))}) melebihi ditemukan (${nf(sum('dt'))})</b> — register SBR sebagian besar belum dimutakhirkan.`;
-
 Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color="#3a4149";
 const cv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
-function hbar(id,key,color,avg,suffix){
-  const s=[...D].sort((a,b)=>b[key]-a[key]);
-  new Chart(document.getElementById(id),{type:'bar',data:{labels:s.map(d=>d.kab),
+const KRAW=[
+ ["LAMPUNG BARAT",15569,2773,3744,286,6,4],["TANGGAMUS",30052,6042,7568,525,23,4],
+ ["LAMPUNG SELATAN",43385,9595,14723,1152,46,8],["LAMPUNG TIMUR",47630,6729,16423,1890,36,19],
+ ["LAMPUNG TENGAH",59202,8044,26036,4162,64,8],["LAMPUNG UTARA",26443,4771,16281,1437,8,5],
+ ["WAY KANAN",19452,3317,8202,906,7,0],["TULANG BAWANG",15356,3038,10175,1085,6,1],
+ ["PESAWARAN",23184,4122,8124,1281,15,2],["PRINGSEWU",20354,2644,3985,377,25,1],
+ ["MESUJI",13398,2809,6570,581,16,3],["TULANG BAWANG BARAT",15047,2754,6839,756,4,2],
+ ["PESISIR BARAT",6347,1509,1798,61,5,1],["BANDAR LAMPUNG",29292,9566,18156,500,29,8],
+ ["METRO",6883,1002,2808,193,0,0],
+];
+const K=KRAW.map(r=>{const[kab,dt,baru,td,mng,te,kk]=r;
+  const plp=dt+td+mng+te+kk, gugur=td+mng+te, exist=dt+baru+kk;
+  return{kab,dt,baru,td,mng,te,kk,plp,gugur,exist,
+    pada:100*dt/plp, pgg:100*gugur/plp, ptd:100*td/plp, bshare:100*baru/(dt+baru)};});
+
+const URAW=[
+ ["LAMPUNG BARAT",11231,14545,8298,7225,2786,59],["TANGGAMUS",57473,21061,16126,17543,9034,219],
+ ["LAMPUNG SELATAN",94123,16801,15762,27663,8338,72],["LAMPUNG TIMUR",127105,35096,24656,36969,11636,273],
+ ["LAMPUNG TENGAH",131143,41259,28032,57030,9941,182],["LAMPUNG UTARA",63918,12777,11003,22927,3545,55],
+ ["WAY KANAN",41330,12393,9906,17399,2357,30],["TULANG BAWANG",18103,9843,6870,6943,4412,56],
+ ["PESAWARAN",17312,16679,9854,8787,7908,147],["PRINGSEWU",21252,13362,8018,4663,7035,105],
+ ["MESUJI",10193,9866,6549,6608,3788,85],["TULANG BAWANG BARAT",9436,12062,7637,4295,3768,41],
+ ["PESISIR BARAT",4925,5141,2891,3463,2210,23],["BANDAR LAMPUNG",130762,2908,9907,20159,563,42],
+ ["METRO",16347,3155,2273,2986,1422,83],
+];
+const U=URAW.map(r=>{const[kab,target,dt,baru,td,tutup,ganda]=r;
+  const plp=dt+td+tutup+ganda, gugur=td+tutup+ganda, exist=dt+baru;
+  return{kab,target,dt,baru,td,tutup,ganda,plp,gugur,exist,
+    hit:100*dt/target, pada:100*dt/plp, pgg:100*gugur/plp, ptd:100*td/plp, bpd:baru/dt};});
+
+const sumK=k=>K.reduce((a,d)=>a+d[k],0), sumU=k=>U.reduce((a,d)=>a+d[k],0);
+const kTdMean=100*sumK('td')/sumK('plp');
+const kBMean=100*sumK('baru')/(sumK('dt')+sumK('baru'));
+
+document.getElementById('kpi-kel').innerHTML=`
+ <div class="kpi ok"><div class="lab">Ada di lapangan</div><div class="val">${nf(sumK('exist'))}</div><div class="foot">ditemukan + baru</div></div>
+ <div class="kpi ok"><div class="lab">Prelist terkonfirmasi ada</div><div class="val">${p1(100*sumK('dt')/sumK('plp'))}%</div><div class="foot">${nf(sumK('dt'))} ditemukan</div></div>
+ <div class="kpi"><div class="lab">Tidak ada di lapangan</div><div class="val">${p1(100*sumK('gugur')/sumK('plp'))}%</div><div class="foot">TD + meninggal + tdk eligible</div></div>
+ <div class="kpi alert"><div class="lab">Tidak ditemukan</div><div class="val">${nf(sumK('td'))}</div><div class="foot">${p1(100*sumK('td')/sumK('plp'))}% dari prelist</div></div>`;
+document.getElementById('head-kel').innerHTML=`<b>Keluarga jauh lebih sehat dari usaha.</b> Dari ${nf(sumK('plp'))} unit prelist DTSEN yang diproses, <b>${p1(100*sumK('dt')/sumK('plp'))}% terkonfirmasi ada</b> dan hanya ${p1(100*sumK('gugur')/sumK('plp'))}% tidak ada di lapangan (tidak ditemukan ${p1(100*sumK('td')/sumK('plp'))}% + meninggal ${p1(100*sumK('mng')/sumK('plp'))}%). Bandingkan usaha yang hanya 41,1% terkonfirmasi.`;
+
+document.getElementById('kpi-ush').innerHTML=`
+ <div class="kpi"><div class="lab">Ada di lapangan</div><div class="val">${nf(sumU('exist'))}</div><div class="foot">ditemukan + baru</div></div>
+ <div class="kpi alert"><div class="lab">Prelist terkonfirmasi ada</div><div class="val">${p1(100*sumU('dt')/sumU('plp'))}%</div><div class="foot">hit rate ${p1(100*sumU('dt')/sumU('target'))}% vs target</div></div>
+ <div class="kpi alert"><div class="lab">Tidak ada di lapangan</div><div class="val">${p1(100*sumU('gugur')/sumU('plp'))}%</div><div class="foot">TD + tutup + ganda</div></div>
+ <div class="kpi alert"><div class="lab">Tidak ditemukan</div><div class="val">${nf(sumU('td'))}</div><div class="foot">> ditemukan (${nf(sumU('dt'))})</div></div>`;
+document.getElementById('head-ush').innerHTML=`<b>Usaha: register SBR belum dimutakhirkan.</b> Dari ${nf(sumU('plp'))} unit prelist diproses, hanya <b>${p1(100*sumU('dt')/sumU('plp'))}% terkonfirmasi ada</b>; <b>${p1(100*sumU('gugur')/sumU('plp'))}% tidak ada di lapangan</b> (TD ${p1(100*sumU('td')/sumU('plp'))}% + tutup ${p1(100*sumU('tutup')/sumU('plp'))}%). Tidak ditemukan (${nf(sumU('td'))}) melebihi ditemukan (${nf(sumU('dt'))}).`;
+
+function hbar(id,rows,key,color,avg){
+  const s=[...rows].sort((a,b)=>b[key]-a[key]);
+  return new Chart(document.getElementById(id),{type:'bar',data:{labels:s.map(d=>d.kab),
     datasets:[{data:s.map(d=>d[key]),backgroundColor:s.map(d=>d[key]>=avg?color:color+'88'),borderRadius:4,barThickness:14}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+p1(c.parsed.x)+'%'}}},
       scales:{x:{grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
 }
-hbar('hit','hit',cv('--ada'),100);
-hbar('td','tdrate',cv('--miss'),provTD);
+function stacked(id,rows,orderKey,series){
+  const order=[...rows].sort((a,b)=>b[orderKey]-a[orderKey]);
+  return new Chart(document.getElementById(id),{type:'bar',data:{labels:order.map(d=>d.kab),
+    datasets:series.map(s=>({label:s.l,data:order.map(d=>d[s.k]),backgroundColor:s.c,barThickness:15}))},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+nf(c.parsed.x)}}},
+      scales:{x:{stacked:true,grid:{color:'#eef0f3'}},y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
+}
+function bubbleQuad(id,rows,xk,yk,sizek,xt,yt,xmin,xmax,ymin,ymax,vx,vy,colorFn){
+  const maxS=Math.max(...rows.map(d=>d[sizek]));
+  new Chart(document.getElementById(id),{type:'bubble',data:{datasets:rows.map(d=>{
+    const c=colorFn(d);
+    return{label:d.kab,data:[{x:d[xk],y:d[yk],r:7+22*d[sizek]/maxS}],backgroundColor:c+'bb',borderColor:c,borderWidth:1.5};})},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:12},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>c[0].dataset.label,
+        label:c=>[' '+xt.split(' ')[0].toLowerCase()+': '+p1(c.parsed.x)+'%',' '+yt.split(' ')[0].toLowerCase()+': '+p1(c.parsed.y)+'%']}}},
+      scales:{x:{min:xmin,max:xmax,title:{display:true,text:xt},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},
+        y:{min:ymin,max:ymax,title:{display:true,text:yt},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}}}},
+    plugins:[{id:'l',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 9.5px Inter';ctx.fillStyle='#12161c';ctx.textAlign='center';
+      c.data.datasets.forEach((ds,i)=>{const m=c.getDatasetMeta(i).data[0];ctx.fillText(ds.label.replace('LAMPUNG','LMP.').slice(0,12),m.x,m.y-m.options.radius-4)});ctx.restore();},
+      afterDraw(c){const xa=c.scales.x,ya=c.scales.y,ctx=c.ctx;ctx.save();ctx.strokeStyle='#94a3b855';ctx.setLineDash([5,4]);
+        let xm=xa.getPixelForValue(vx);ctx.beginPath();ctx.moveTo(xm,ya.top);ctx.lineTo(xm,ya.bottom);ctx.stroke();
+        let ym=ya.getPixelForValue(vy);ctx.beginPath();ctx.moveTo(xa.left,ym);ctx.lineTo(xa.right,ym);ctx.stroke();ctx.restore();}}]});
+}
 
-const maxT=Math.max(...D.map(d=>d.target));
-new Chart(document.getElementById('quad'),{type:'bubble',data:{datasets:D.map(d=>{
-  const c=d.tdrate>50?'#dc2626':d.tdrate>=33?'#d97706':'#0f8a6a';
-  return{label:d.kab,data:[{x:d.hit,y:d.tdrate,r:7+22*d.target/maxT}],backgroundColor:c+'bb',borderColor:c,borderWidth:1.5};})},
-  options:{responsive:true,maintainAspectRatio:false,layout:{padding:12},
-    plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>c[0].dataset.label,
-      label:c=>[' hit rate: '+p1(c.parsed.x)+'%',' tidak ditemukan: '+p1(c.parsed.y)+'%',
-        ' target: '+nf(D.find(d=>d.kab===c.dataset.label).target)]}}},
-    scales:{x:{min:-8,max:142,title:{display:true,text:'Hit rate (ditemukan ÷ target) →'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},
-      y:{min:12,max:92,title:{display:true,text:'Tidak ditemukan dalam prelist (%) →'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}}}},
-  plugins:[{id:'l',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 9.5px Inter';ctx.fillStyle='#12161c';ctx.textAlign='center';
-    c.data.datasets.forEach((ds,i)=>{const m=c.getDatasetMeta(i).data[0];ctx.fillText(ds.label.replace('LAMPUNG','LMP.').slice(0,12),m.x,m.y-m.options.radius-4)});ctx.restore();},
-    afterDraw(c){const xa=c.scales.x,ya=c.scales.y,ctx=c.ctx;ctx.save();ctx.strokeStyle='#94a3b855';ctx.setLineDash([5,4]);
-      let xm=xa.getPixelForValue(100);ctx.beginPath();ctx.moveTo(xm,ya.top);ctx.lineTo(xm,ya.bottom);ctx.stroke();
-      let ym=ya.getPixelForValue(50);ctx.beginPath();ctx.moveTo(xa.left,ym);ctx.lineTo(xa.right,ym);ctx.stroke();ctx.restore();}}]
-});
+function fillKel(){const tb=document.querySelector('#tbl-kel tbody');
+  const fl=d=>d.ptd>=33?['f-hi','Tinggi']:d.ptd>=25?['f-mid','Sedang']:['f-lo','Rendah'];
+  const render=rows=>tb.innerHTML=rows.map(d=>{const[c,t]=fl(d);return `<tr><td>${d.kab}</td><td>${nf(d.exist)}</td>
+    <td>${nf(d.dt)}</td><td>${nf(d.baru)}</td><td>${nf(d.td)}</td><td>${nf(d.mng)}</td>
+    <td>${p1(d.pada)}%</td><td>${p1(d.pgg)}%</td><td>${p1(d.ptd)}%</td><td><span class="flag ${c}">${t}</span></td></tr>`}).join('');
+  let dir={};render([...K].sort((a,b)=>b.ptd-a.ptd));
+  document.querySelectorAll('#tbl-kel thead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;dir[k]=!dir[k];const key=k==='fl'?'ptd':k;
+    render([...K].sort((a,b)=>{const av=a[key],bv=b[key];return typeof av==='string'?(dir[k]?av.localeCompare(bv):bv.localeCompare(av)):(dir[k]?av-bv:bv-av);}));});
+}
+function fillUsh(){const tb=document.querySelector('#tbl-ush tbody');
+  const fl=d=>d.hit>=90&&d.pgg<45?['f-lo','SBR kekecilan']:d.bpd>2?['f-hi','Match gagal']:d.pgg>=60?['f-hi','Konfirmasi rendah']:['f-mid','Campuran'];
+  const render=rows=>tb.innerHTML=rows.map(d=>{const[c,t]=fl(d);return `<tr><td>${d.kab}</td><td>${nf(d.target)}</td><td>${nf(d.exist)}</td>
+    <td>${nf(d.dt)}</td><td>${nf(d.td)}</td><td>${nf(d.tutup)}</td>
+    <td>${p1(d.hit)}%</td><td>${p1(d.pgg)}%</td><td>${p1(d.ptd)}%</td><td><span class="flag ${c}">${t}</span></td></tr>`}).join('');
+  let dir={};render([...U].sort((a,b)=>a.hit-b.hit));
+  document.querySelectorAll('#tbl-ush thead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;dir[k]=!dir[k];const key=k==='fl'?'hit':k;
+    render([...U].sort((a,b)=>{const av=a[key],bv=b[key];return typeof av==='string'?(dir[k]?av.localeCompare(bv):bv.localeCompare(av)):(dir[k]?av-bv:bv-av);}));});
+}
 
-const bl=D.find(d=>d.kode===1871);
-document.getElementById('bl').innerHTML=`<b>Anomali Bandar Lampung:</b> target prelist ${nf(bl.target)} (terbesar se-provinsi) tapi hanya ${nf(bl.dt)} ditemukan — hit rate <b>${p1(bl.hit)}%</b>, tidak ditemukan ${p1(bl.tdrate)}%, baru/ditemukan ${bl.bpd.toFixed(1)}. Pola ini menunjuk <b>kegagalan pencocokan alamat register</b> (bukan usahanya tidak ada), dan ±107rb target tidak terlihat di disposisi manapun. Audit prioritas #1.`;
+const built={kel:false,ush:false};
+function buildKel(){if(built.kel)return;built.kel=true;
+  hbar('kel-td',K,'ptd',cv('--miss'),kTdMean);
+  hbar('kel-gg',K,'pgg',cv('--tutup'),100*sumK('gugur')/sumK('plp'));
+  bubbleQuad('kel-quad',K,'ptd','bshare','plp',
+    'Tidak ditemukan dalam prelist (%) →','Keluarga baru dari yang ada (%) →',
+    12,42,8,28,kTdMean,kBMean,
+    d=>d.ptd>33?'#dc2626':d.ptd>=25?'#d97706':'#0f8a6a');
+  stacked('kel-comp',K,'plp',[{l:'Ditemukan',k:'dt',c:cv('--ada')},{l:'Baru',k:'baru',c:cv('--baru')},
+    {l:'Tidak ditemukan',k:'td',c:cv('--miss')},{l:'Meninggal',k:'mng',c:cv('--mng')}]);
+  fillKel();
+}
+function buildUsh(){if(built.ush)return;built.ush=true;
+  hbar('ush-hit',U,'hit',cv('--ada'),100);
+  hbar('ush-gg',U,'pgg',cv('--tutup'),100*sumU('gugur')/sumU('plp'));
+  const maxT=Math.max(...U.map(d=>d.target));
+  new Chart(document.getElementById('ush-quad'),{type:'bubble',data:{datasets:U.map(d=>{
+    const c=d.ptd>50?'#dc2626':d.ptd>=33?'#d97706':'#0f8a6a';
+    return{label:d.kab,data:[{x:d.hit,y:d.ptd,r:7+22*d.target/maxT}],backgroundColor:c+'bb',borderColor:c,borderWidth:1.5};})},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:12},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>c[0].dataset.label,
+        label:c=>[' hit rate: '+p1(c.parsed.x)+'%',' tidak ditemukan: '+p1(c.parsed.y)+'%',' target: '+nf(U.find(d=>d.kab===c.dataset.label).target)]}}},
+      scales:{x:{min:-8,max:142,title:{display:true,text:'Hit rate (ditemukan ÷ target) →'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}},
+        y:{min:12,max:92,title:{display:true,text:'Tidak ditemukan dalam prelist (%) →'},grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}}}},
+    plugins:[{id:'l',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 9.5px Inter';ctx.fillStyle='#12161c';ctx.textAlign='center';
+      c.data.datasets.forEach((ds,i)=>{const m=c.getDatasetMeta(i).data[0];ctx.fillText(ds.label.replace('LAMPUNG','LMP.').slice(0,12),m.x,m.y-m.options.radius-4)});ctx.restore();},
+      afterDraw(c){const xa=c.scales.x,ya=c.scales.y,ctx=c.ctx;ctx.save();ctx.strokeStyle='#94a3b855';ctx.setLineDash([5,4]);
+        let xm=xa.getPixelForValue(100);ctx.beginPath();ctx.moveTo(xm,ya.top);ctx.lineTo(xm,ya.bottom);ctx.stroke();
+        let ym=ya.getPixelForValue(50);ctx.beginPath();ctx.moveTo(xa.left,ym);ctx.lineTo(xa.right,ym);ctx.stroke();ctx.restore();}}]});
+  const bl=U.find(d=>d.kab==='BANDAR LAMPUNG');
+  document.getElementById('bl-ush').innerHTML=`<b>Anomali Bandar Lampung:</b> target ${nf(bl.target)} (terbesar) tapi hanya ${nf(bl.dt)} ditemukan — hit rate <b>${p1(bl.hit)}%</b>, tidak ada di lapangan ${p1(bl.pgg)}%, baru/ditemukan ${bl.bpd.toFixed(1)}. Pola ini menunjuk kegagalan pencocokan alamat register, bukan usahanya tidak ada. Audit prioritas #1.`;
+  stacked('ush-comp',U,'target',[{l:'Ditemukan',k:'dt',c:cv('--ada')},{l:'Baru',k:'baru',c:cv('--baru')},
+    {l:'Tidak ditemukan',k:'td',c:cv('--miss')},{l:'Tutup',k:'tutup',c:cv('--tutup')}]);
+  fillUsh();
+}
 
-const order=[...D].sort((a,b)=>b.target-a.target);
-new Chart(document.getElementById('comp'),{type:'bar',data:{labels:order.map(d=>d.kab),
-  datasets:[{label:'Ditemukan',data:order.map(d=>d.dt),backgroundColor:cv('--ada'),barThickness:15},
-    {label:'Baru',data:order.map(d=>d.baru),backgroundColor:cv('--baru'),barThickness:15},
-    {label:'Tidak ditemukan',data:order.map(d=>d.td),backgroundColor:cv('--miss'),barThickness:15},
-    {label:'Tutup',data:order.map(d=>d.tutup),backgroundColor:cv('--tutup'),barThickness:15}]},
-  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+nf(c.parsed.x)}}},
-    scales:{x:{stacked:true,grid:{color:'#eef0f3'}},y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
-
-function cls(d){if(d.hit>=90&&d.tdrate<40)return['f-lo','SBR kekecilan'];
-  if(d.bpd>2)return['f-hi','Match gagal'];
-  if(d.tdrate>=50)return['f-hi','Konfirmasi rendah'];return['f-mid','Campuran'];}
-const tb=document.querySelector('#tbl tbody');
-function render(rows){tb.innerHTML=rows.map(d=>{const[c,t]=cls(d);return `<tr>
-  <td>${d.kab}</td><td>${nf(d.target)}</td><td>${nf(d.dt)}</td><td>${nf(d.baru)}</td>
-  <td>${nf(d.td)}</td><td>${nf(d.tutup)}</td><td>${p1(d.hit)}%</td><td>${p1(d.tdrate)}%</td>
-  <td>${d.bpd.toFixed(2)}</td><td><span class="flag ${c}">${t}</span></td></tr>`}).join('');}
-let dir={};render([...D].sort((a,b)=>a.hit-b.hit));
-document.querySelectorAll('#tbl thead th').forEach(th=>th.addEventListener('click',()=>{
-  const k=th.dataset.k;dir[k]=!dir[k];const key=k==='cls'?'hit':k;
-  render([...D].sort((a,b)=>{const av=a[key],bv=b[key];
-    return typeof av==='string'?(dir[k]?av.localeCompare(bv):bv.localeCompare(av)):(dir[k]?av-bv:bv-av);}));}));
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  document.getElementById('view-kel').classList.toggle('active',t==='kel');
+  document.getElementById('view-ush').classList.toggle('active',t==='ush');
+  if(t==='kel')buildKel(); else buildUsh();
+}
+buildKel();
 </script>
 </body>
 </html>
