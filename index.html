@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analisis Tidak Ditemukan vs Real di Lapangan — SE2026 Lampung</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{
   --o500:#ED6B23; --o600:#C4551A; --o100:#FDE9DE; --o50:#FEF5EF;
@@ -145,6 +146,8 @@ document.getElementById('keyalert').innerHTML=
 
 Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
 Chart.defaults.font.size=11.5; Chart.defaults.color='#6B7683';
+Chart.register(ChartDataLabels);
+Chart.defaults.plugins.datalabels={display:false};
 
 // Chart 1: ranked % TD
 new Chart(c1,{type:'bar',data:{labels:names,datasets:[{
@@ -154,8 +157,10 @@ new Chart(c1,{type:'bar',data:{labels:names,datasets:[{
  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false},
    tooltip:{callbacks:{label:c=>' TD '+c.parsed.x+'% ('+fmt(K[c.dataIndex].td)+' assignment)'}},
-   annotation:false},
-  scales:{x:{title:{display:true,text:'% Tidak Ditemukan terhadap prelist'},grid:{color:'#EEF1F4'}},
+   datalabels:{display:true,anchor:'end',align:'end',offset:2,
+     color:c=>K[c.dataIndex].pctTD>=P.pctTD?'#B02020':'#8A6D5F',
+     font:{size:10.5,weight:'bold'},formatter:v=>v+'%'}},
+  scales:{x:{title:{display:true,text:'% Tidak Ditemukan terhadap prelist'},grid:{color:'#EEF1F4'},suggestedMax:27},
           y:{grid:{display:false}}}},
  plugins:[{afterDraw:ch=>{const {ctx,scales:{x,y}}=ch;const px=x.getPixelForValue(P.pctTD);
    ctx.save();ctx.strokeStyle='#7A828C';ctx.setLineDash([5,4]);ctx.lineWidth=1.4;
@@ -170,18 +175,24 @@ new Chart(c2,{type:'bar',data:{labels:names,datasets:[
  options:{responsive:true,maintainAspectRatio:false,
   plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:16}},
    tooltip:{callbacks:{afterBody:items=>{const k=K[items[0].dataIndex];
-     return 'Rasio TD:100 Ada = '+k.ratio;}}}},
+     return 'Rasio TD:100 Ada = '+k.ratio;}}},
+   datalabels:{display:true,anchor:'end',align:'end',offset:1,rotation:-90,
+     color:c=>c.datasetIndex===0?'#14663F':'#A31F1F',
+     font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{grid:{display:false},ticks:{maxRotation:55,minRotation:55}},
-          y:{title:{display:true,text:'% terhadap prelist awal'},grid:{color:'#EEF1F4'}}}}});
+          y:{title:{display:true,text:'% terhadap prelist awal'},grid:{color:'#EEF1F4'},grace:'14%'}}}});
 
 // Chart 3: TD usaha vs keluarga
 new Chart(c3,{type:'bar',data:{labels:names,datasets:[
   {label:'% TD Usaha',data:K.map(k=>k.pctUTD),backgroundColor:O,borderRadius:4},
   {label:'% TD Keluarga',data:K.map(k=>k.pctKTD),backgroundColor:'#F6C7A6',borderRadius:4}]},
  options:{responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:14}}},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:14}},
+   datalabels:{display:c=>c.dataset.data[c.dataIndex]>=2,anchor:'end',align:'end',offset:1,rotation:-90,
+     color:c=>c.datasetIndex===0?'#B5531C':'#9A6B45',
+     font:{size:8.5,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{grid:{display:false},ticks:{maxRotation:60,minRotation:60,font:{size:10}}},
-          y:{title:{display:true,text:'% tidak ditemukan'},grid:{color:'#EEF1F4'}}}}});
+          y:{title:{display:true,text:'% tidak ditemukan'},grid:{color:'#EEF1F4'},grace:'18%'}}}});
 
 // Chart 4: found rate 100% stacked
 const s4=[...K].sort((a,b)=>a.found-b.found);
@@ -190,7 +201,10 @@ new Chart(c4,{type:'bar',data:{labels:s4.map(k=>k.nama),datasets:[
   {label:'Tidak ditemukan',data:s4.map(k=>+(100-k.found).toFixed(2)),backgroundColor:'#EBB0B0',borderRadius:3,stack:'s'}]},
  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
   plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:12,font:{size:10}}},
-   tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.x+'%'}}},
+   tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.x+'%'}},
+   datalabels:{display:c=>c.dataset.data[c.dataIndex]>=7,anchor:'center',align:'center',
+     color:c=>c.datasetIndex===0?'#fff':'#7A1F1F',
+     font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{max:100,stacked:true,grid:{color:'#EEF1F4'},ticks:{callback:v=>v+'%'}},
           y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
 
