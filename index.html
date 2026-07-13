@@ -75,7 +75,7 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
     <div class="kpi k-prelist"><div class="lab">Prelist Awal (U+K)</div><div class="val" id="k-prelist"></div><div class="sub" id="k-prelist-s"></div></div>
     <div class="kpi k-ada"><div class="lab">Ada di Lapangan (Ditemukan+Baru)</div><div class="val ada" id="k-ada"></div><div class="sub" id="k-ada-s"></div></div>
     <div class="kpi k-td"><div class="lab">Tidak Ditemukan (U+K)</div><div class="val td" id="k-td"></div><div class="sub" id="k-td-s"></div></div>
-    <div class="kpi k-found"><div class="lab">Found Rate (Real di Lapangan)*</div><div class="val" id="k-found"></div><div class="sub">dari yang sudah terputus status ada/tidak</div></div>
+    <div class="kpi k-found"><div class="lab">Proporsi Real di Lapangan*</div><div class="val" id="k-found"></div><div class="sub">dari assignment yang sudah selesai didata (ditemukan/tidak ditemukan)</div></div>
   </div>
 
   <div class="alert" id="keyalert"></div>
@@ -95,8 +95,8 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
       <div class="chartbox"><canvas id="c3"></canvas></div>
     </div>
     <div class="card">
-      <h3>4 &nbsp; Komposisi Real di Lapangan (dari yang sudah diputus)</h3>
-      <div class="cap">Dari assignment yang statusnya sudah pasti (ada vs tidak ditemukan), berapa % yang benar-benar ada. Batang hijau tinggi = kualitas prelist baik.</div>
+      <h3>4 &nbsp; Komposisi Real di Lapangan (dari yang sudah selesai didata)</h3>
+      <div class="cap">Dari assignment yang sudah selesai didata (ditemukan atau tidak ditemukan), berapa % yang benar-benar ada. Batang hijau tinggi = kualitas prelist baik.</div>
       <div class="chartbox"><canvas id="c4"></canvas></div>
     </div>
   </div>
@@ -118,7 +118,7 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
   <ul class="reco" id="reco"></ul>
 
   <footer>
-    *Found Rate = Ditemukan+Baru / (Ditemukan+Baru + Tidak Ditemukan). Denominator tidak termasuk assignment yang belum didatangi, sehingga angka ini murni menilai kualitas hasil yang sudah pasti.<br>
+    *Proporsi Real di Lapangan = Ditemukan+Baru / (Ditemukan+Baru + Tidak Ditemukan). Penyebut hanya assignment yang sudah selesai didata (tidak termasuk yang belum didatangi), sehingga angka ini murni menilai kualitas prelist.<br>
     Sumber: Progres pendataan existing SE2026 per 13 Juli 2026 &middot; Prelist awal = usaha + keluarga &middot; Dibuat untuk pimpinan BPS Provinsi Lampung.
   </footer>
 </div>
@@ -225,7 +225,7 @@ const recos=[
  '<b>Verifikasi prelist usaha</b> di kabupaten dengan TD usaha tertinggi: '+highU.join(', ')+'. Fokus pada pencocokan alamat direktori (SBR) &mdash; banyak "tidak ditemukan" kemungkinan karena alamat register tidak akurat, bukan usaha benar-benar hilang.',
  '<b>Bedakan penyebab TD.</b> Wajibkan pengawas mengklasifikasi ulang: (a) alamat prelist salah/tidak lengkap, (b) usaha pindah, (c) petugas belum optimal. Ini menentukan apakah solusinya perbaikan data atau penambahan effort lapangan.',
  '<b>Kontrol harian rasio TD:Ditemukan.</b> Kabupaten dengan rasio TD:100 Ada mendekati/di atas 100 (mis. Bandar Lampung '+K.find(k=>k.nama=="Bandar Lampung").ratio+') harus dievaluasi karena TD hampir menyamai yang ditemukan.',
- '<b>Pendataan masih berjalan.</b> Karena denominator = prelist awal dan sebagian besar assignment belum didatangi, angka TD masih dapat berubah. Mitigasi dini menekan akumulasi TD saat sisa assignment dikerjakan.'
+ '<b>Pendataan masih berjalan.</b> Karena penyebut = prelist awal dan sebagian besar assignment belum didatangi, angka TD masih dapat berubah. Mitigasi dini menekan akumulasi TD saat sisa assignment dikerjakan.'
 ];
 const ul=document.getElementById('reco');
 recos.forEach((r,i)=>ul.insertAdjacentHTML('beforeend','<li><span class="num">'+(i+1)+'</span><span>'+r+'</span></li>'));
