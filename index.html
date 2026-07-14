@@ -3,62 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analisis Tidak Ditemukan vs Real di Lapangan — SE2026 Lampung</title>
+<title>Analisis Tidak Ditemukan & Zona Risiko Moral Hazard — SE2026 Lampung</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
-:root{
-  --o500:#ED6B23; --o600:#C4551A; --o100:#FDE9DE; --o50:#FEF5EF;
-  --td:#D32F2F; --td-l:#FBE0E0; --ada:#1B8A5A; --ada-l:#DEF3EA;
-  --ink:#1F2733; --muted:#6B7683; --line:#E6E9ED; --bg:#F4F6F8; --card:#FFFFFF;
-  --warn:#E8A317;
-}
+:root{--o500:#ED6B23;--o600:#C4551A;--o100:#FDE9DE;--o50:#FEF5EF;--td:#D32F2F;--td-l:#FBE0E0;
+--ada:#1B8A5A;--ada-l:#DEF3EA;--ink:#1F2733;--muted:#6B7683;--line:#E6E9ED;--bg:#F4F6F8;--card:#FFF;--warn:#E8A317}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
 .wrap{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
 header.top{background:linear-gradient(135deg,var(--o600),var(--o500));color:#fff;border-radius:16px;padding:26px 30px;box-shadow:0 8px 24px rgba(196,85,26,.22)}
 header.top .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:11px;font-weight:700;letter-spacing:.6px;padding:4px 12px;border-radius:20px;text-transform:uppercase}
-header.top h1{font-size:25px;margin:12px 0 4px;font-weight:800;letter-spacing:-.3px}
+header.top h1{font-size:24px;margin:12px 0 4px;font-weight:800;letter-spacing:-.3px}
 header.top p{opacity:.92;font-size:13.5px}
 .section-title{font-size:16px;font-weight:800;margin:30px 0 4px;display:flex;align-items:center;gap:9px}
 .section-title:before{content:"";width:5px;height:20px;background:var(--o500);border-radius:3px}
 .section-sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
-
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;position:relative;overflow:hidden}
 .kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
-.kpi.k-prelist:before{background:var(--o500)} .kpi.k-ada:before{background:var(--ada)}
-.kpi.k-td:before{background:var(--td)} .kpi.k-found:before{background:var(--warn)}
-.kpi .lab{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.kpi .val{font-size:27px;font-weight:800;margin:6px 0 2px;letter-spacing:-.5px}
-.kpi .sub{font-size:12px;color:var(--muted)}
-.kpi .val.td{color:var(--td)} .kpi .val.ada{color:var(--ada)}
-
+.kpi.k-prelist:before{background:var(--o500)}.kpi.k-cap:before{background:#2C6FB5}
+.kpi.k-ada:before{background:var(--ada)}.kpi.k-td:before{background:var(--td)}.kpi.k-found:before{background:var(--warn)}
+.kpi .lab{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.kpi .val{font-size:23px;font-weight:800;margin:6px 0 2px;letter-spacing:-.5px}
+.kpi .val.td{color:var(--td)}.kpi .val.ada{color:var(--ada)}.kpi .val.cap{color:#2C6FB5}
+.kpi .sub{font-size:11.5px;color:var(--muted)}
 .alert{background:var(--o50);border:1px solid var(--o100);border-left:5px solid var(--o500);border-radius:12px;padding:16px 20px;margin-top:20px;font-size:13.5px}
-.alert b{color:var(--o600)}
-.alert .big{font-size:15px;font-weight:700;display:block;margin-bottom:4px}
-
+.alert b{color:var(--o600)}.alert .big{font-size:15px;font-weight:700;display:block;margin-bottom:4px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px 8px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .card h3{font-size:14px;font-weight:700;margin-bottom:2px}
 .card .cap{font-size:11.5px;color:var(--muted);margin-bottom:10px}
-.chartbox{position:relative;height:360px}
-.chartbox.tall{height:430px}
-
+.chartbox{position:relative;height:360px}.chartbox.tall{height:430px}.chartbox.xl{height:520px}
 table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
 th,td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
-th{background:var(--o50);color:var(--o600);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.3px;position:sticky;top:0}
+th{background:var(--o50);color:var(--o600);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
 td:first-child,th:first-child{text-align:left;font-weight:600}
 tr:hover td{background:#FAFBFC}
 .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
-.p-hi{background:var(--td-l);color:var(--td)} .p-mid{background:#FFF3DC;color:#B77800} .p-lo{background:var(--ada-l);color:var(--ada)}
+.p-hi{background:var(--td-l);color:var(--td)}.p-mid{background:#FFF3DC;color:#B77800}.p-lo{background:var(--ada-l);color:var(--ada)}
 .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
-
 .reco{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 4px}
 .reco li{list-style:none;padding:13px 18px;border-bottom:1px solid var(--line);font-size:13.5px;display:flex;gap:12px;align-items:flex-start}
 .reco li:last-child{border-bottom:none}
 .reco .num{flex:0 0 26px;height:26px;background:var(--o500);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
 .reco b{color:var(--o600)}
+.legend-zone{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:2px 0 10px}
+.legend-zone span{display:inline-flex;align-items:center;gap:6px}
+.legend-zone i{width:12px;height:12px;border-radius:3px;display:inline-block}
 footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;line-height:1.7}
 @media(max-width:920px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
 </style>
@@ -67,134 +59,163 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
 <div class="wrap">
   <header class="top">
     <span class="tag">Sensus Ekonomi 2026 &middot; BPS Provinsi Lampung</span>
-    <h1>Analisis Assignment "Tidak Ditemukan" vs Real di Lapangan</h1>
-    <p>Rekap 15 kabupaten/kota &mdash; proporsi terhadap prelist awal (usaha + keluarga) &middot; Data existing per 13 Juli 2026</p>
+    <h1>Analisis "Tidak Ditemukan" &amp; Zona Risiko Moral Hazard Petugas</h1>
+    <p>Rekap 15 kabupaten/kota &mdash; usaha (BKU) + keluarga terhadap prelist awal &middot; Data existing per <b id="tgl"></b></p>
   </header>
 
   <div class="kpis">
     <div class="kpi k-prelist"><div class="lab">Prelist Awal (U+K)</div><div class="val" id="k-prelist"></div><div class="sub" id="k-prelist-s"></div></div>
-    <div class="kpi k-ada"><div class="lab">Ada di Lapangan (Ditemukan+Baru)</div><div class="val ada" id="k-ada"></div><div class="sub" id="k-ada-s"></div></div>
+    <div class="kpi k-cap"><div class="lab">Capaian Pendataan</div><div class="val cap" id="k-cap"></div><div class="sub" id="k-cap-s"></div></div>
+    <div class="kpi k-ada"><div class="lab">Ada di Lapangan (Dit.+Baru)</div><div class="val ada" id="k-ada"></div><div class="sub" id="k-ada-s"></div></div>
     <div class="kpi k-td"><div class="lab">Tidak Ditemukan (U+K)</div><div class="val td" id="k-td"></div><div class="sub" id="k-td-s"></div></div>
-    <div class="kpi k-found"><div class="lab">Proporsi Real di Lapangan*</div><div class="val" id="k-found"></div><div class="sub">dari assignment yang sudah selesai didata (ditemukan/tidak ditemukan)</div></div>
+    <div class="kpi k-found"><div class="lab">Proporsi Real di Lapangan*</div><div class="val" id="k-found"></div><div class="sub">dari yang sudah selesai didata</div></div>
   </div>
 
   <div class="alert" id="keyalert"></div>
 
-  <div class="section-title">1 &nbsp; Peringkat % Tidak Ditemukan terhadap Prelist Awal</div>
-  <div class="section-sub">Semakin panjang batang, semakin besar porsi assignment yang tidak ditemukan &mdash; prioritas mitigasi. Garis putus-putus = rata-rata provinsi.</div>
+  <div class="section-title">1 &nbsp; Zona Risiko: Capaian vs Tingkat Tidak Ditemukan</div>
+  <div class="section-sub">Sumbu-X = capaian pendataan (% responden didata). Sumbu-Y = tingkat tidak ditemukan dari hasil yang sudah selesai didata (semakin tinggi, semakin banyak hasil berupa "tidak ditemukan"). Ukuran gelembung = besar prelist. Garis putus-putus = rata-rata provinsi.</div>
+  <div class="legend-zone">
+    <span><i style="background:#F6C6C6"></i> Zona audit &mdash; TD tinggi (di atas rata-rata provinsi)</span>
+    <span><i style="background:#DFF0E6"></i> Zona sehat &mdash; TD rendah</span>
+  </div>
+  <div class="card"><div class="chartbox xl"><canvas id="cScatter"></canvas></div></div>
+
+  <div class="section-title">2 &nbsp; Peringkat % Tidak Ditemukan terhadap Prelist Awal</div>
+  <div class="section-sub">Prioritas mitigasi. Garis putus-putus = rata-rata provinsi.</div>
   <div class="card"><div class="chartbox tall"><canvas id="c1"></canvas></div></div>
 
-  <div class="section-title">2 &nbsp; Perbandingan: Ada di Lapangan vs Tidak Ditemukan</div>
-  <div class="section-sub">Keduanya sebagai % terhadap prelist awal. Sisanya = assignment yang belum selesai didatangi / status lain (pendataan masih berjalan).</div>
+  <div class="section-title">3 &nbsp; Perbandingan: Ada di Lapangan vs Tidak Ditemukan</div>
+  <div class="section-sub">Keduanya sebagai % terhadap prelist awal. Sisanya = assignment yang belum selesai didatangi.</div>
   <div class="card"><div class="chartbox tall"><canvas id="c2"></canvas></div></div>
 
   <div class="grid2" style="margin-top:20px">
     <div class="card">
-      <h3>3 &nbsp; Akar Masalah: TD Usaha vs TD Keluarga</h3>
-      <div class="cap">% tidak ditemukan terhadap prelist masing-masing. TD usaha jauh lebih tinggi &rarr; indikasi kegagalan matching alamat register (SBR), bukan hanya masalah lapangan.</div>
+      <h3>4 &nbsp; Akar Masalah: TD Usaha vs TD Keluarga</h3>
+      <div class="cap">% tidak ditemukan terhadap prelist masing-masing. TD usaha jauh lebih tinggi &rarr; indikasi kegagalan pencocokan alamat direktori usaha (SBR), bukan sekadar masalah lapangan.</div>
       <div class="chartbox"><canvas id="c3"></canvas></div>
     </div>
     <div class="card">
-      <h3>4 &nbsp; Komposisi Real di Lapangan (dari yang sudah selesai didata)</h3>
+      <h3>5 &nbsp; Komposisi Real di Lapangan (dari yang sudah selesai didata)</h3>
       <div class="cap">Dari assignment yang sudah selesai didata (ditemukan atau tidak ditemukan), berapa % yang benar-benar ada. Batang hijau tinggi = kualitas prelist baik.</div>
       <div class="chartbox"><canvas id="c4"></canvas></div>
     </div>
   </div>
 
-  <div class="section-title">5 &nbsp; Tabel Rekap &amp; Status Risiko</div>
-  <div class="section-sub">Diurutkan dari % Tidak Ditemukan tertinggi. Rasio TD:100 = jumlah TD untuk setiap 100 assignment yang ditemukan+baru.</div>
+  <div class="section-title">6 &nbsp; Tabel Rekap &amp; Status Risiko</div>
+  <div class="section-sub">Diurutkan dari % Tidak Ditemukan tertinggi. TD-share = % tidak ditemukan dari hasil yang sudah selesai didata (indikator utama risiko moral hazard).</div>
   <div class="tblwrap">
-    <table id="tbl">
-      <thead><tr>
-        <th>Kabupaten / Kota</th><th>Prelist</th><th>Ada (D+B)</th><th>% Ada</th>
-        <th>Tidak Ditemukan</th><th>% TD</th><th>% TD Usaha</th><th>% TD Klg</th>
-        <th>Rasio TD:100 Ada</th><th>Status</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+    <table id="tbl"><thead><tr>
+      <th>Kabupaten / Kota</th><th>Prelist</th><th>Capaian</th><th>Ada (D+B)</th><th>% Ada</th>
+      <th>Tidak Ditemukan</th><th>% TD</th><th>TD-share</th><th>% TD Usaha</th><th>Status</th>
+    </tr></thead><tbody></tbody></table>
   </div>
 
-  <div class="section-title">6 &nbsp; Rekomendasi Mitigasi</div>
+  <div class="section-title">7 &nbsp; Rekomendasi Mitigasi (Berorientasi Hasil)</div>
   <ul class="reco" id="reco"></ul>
 
   <footer>
-    *Proporsi Real di Lapangan = Ditemukan+Baru / (Ditemukan+Baru + Tidak Ditemukan). Penyebut hanya assignment yang sudah selesai didata (tidak termasuk yang belum didatangi), sehingga angka ini murni menilai kualitas prelist.<br>
-    Sumber: Progres pendataan existing SE2026 per 13 Juli 2026 &middot; Prelist awal = usaha + keluarga &middot; Dibuat untuk pimpinan BPS Provinsi Lampung.
+    *Proporsi Real di Lapangan = Ditemukan+Baru / (Ditemukan+Baru + Tidak Ditemukan). Penyebut hanya assignment yang sudah selesai didata.<br>
+    Sumber: FASIH Pendataan SE 2026 &mdash; Progres Pendataan (usaha BKU) &amp; Pemutakhiran Keluarga per 14 Jul 2026 &middot; Dibuat untuk pimpinan BPS Provinsi Lampung.
   </footer>
 </div>
 
 <script>
-const DATA = {"prov": {"prelist": 3492079, "pU": 754653, "pK": 2737426, "ada": 929315, "td": 608989, "uTD": 300106, "kTD": 308883, "pctAda": 26.61, "pctTD": 17.44, "pctUTD": 39.77, "pctKTD": 11.28, "found": 60.41}, "kab": [{"nama": "Bandar Lampung", "prelist": 410241, "pU": 130762, "pK": 279479, "ada": 81246, "td": 96602, "uTD": 48662, "kTD": 47940, "uAda": 6540, "kAda": 74706, "pctAda": 19.8, "pctTD": 23.55, "pctUTD": 37.21, "pctKTD": 17.15, "found": 45.68, "ratio": 118.9}, {"nama": "Lampung Utara", "prelist": 263314, "pU": 63918, "pK": 199396, "ada": 63000, "td": 58132, "uTD": 29223, "kTD": 28909, "uAda": 2672, "kAda": 60328, "pctAda": 23.93, "pctTD": 22.08, "pctUTD": 45.72, "pctKTD": 14.5, "found": 52.01, "ratio": 92.3}, {"nama": "Way Kanan", "prelist": 187422, "pU": 41330, "pK": 146092, "ada": 49498, "td": 37050, "uTD": 21164, "kTD": 15886, "uAda": 2241, "kAda": 47257, "pctAda": 26.41, "pctTD": 19.77, "pctUTD": 51.21, "pctKTD": 10.87, "found": 57.19, "ratio": 74.9}, {"nama": "Lampung Tengah", "prelist": 580719, "pU": 131143, "pK": 449576, "ada": 142246, "td": 112138, "uTD": 63110, "kTD": 49028, "uAda": 9545, "kAda": 132701, "pctAda": 24.49, "pctTD": 19.31, "pctUTD": 48.12, "pctKTD": 10.91, "found": 55.92, "ratio": 78.8}, {"nama": "Tulang Bawang", "prelist": 154763, "pU": 18103, "pK": 136660, "ada": 38219, "td": 27140, "uTD": 7322, "kTD": 19818, "uAda": 2526, "kAda": 35693, "pctAda": 24.7, "pctTD": 17.54, "pctUTD": 40.45, "pctKTD": 14.5, "found": 58.48, "ratio": 71.0}, {"nama": "Lampung Selatan", "prelist": 436860, "pU": 94123, "pK": 342737, "ada": 118038, "td": 74923, "uTD": 39523, "kTD": 35400, "uAda": 6500, "kAda": 111538, "pctAda": 27.02, "pctTD": 17.15, "pctUTD": 41.99, "pctKTD": 10.33, "found": 61.17, "ratio": 63.5}, {"nama": "Lampung Timur", "prelist": 489946, "pU": 127105, "pK": 362841, "ada": 119701, "td": 81482, "uTD": 46062, "kTD": 35420, "uAda": 9688, "kAda": 110013, "pctAda": 24.43, "pctTD": 16.63, "pctUTD": 36.24, "pctKTD": 9.76, "found": 59.5, "ratio": 68.1}, {"nama": "Metro", "prelist": 70494, "pU": 16347, "pK": 54147, "ada": 18228, "td": 10741, "uTD": 4934, "kTD": 5807, "uAda": 2368, "kAda": 15860, "pctAda": 25.86, "pctTD": 15.24, "pctUTD": 30.18, "pctKTD": 10.72, "found": 62.92, "ratio": 58.9}, {"nama": "Mesuji", "prelist": 86207, "pU": 10193, "pK": 76014, "ada": 33151, "td": 12914, "uTD": 2908, "kTD": 10006, "uAda": 2185, "kAda": 30966, "pctAda": 38.46, "pctTD": 14.98, "pctUTD": 28.53, "pctKTD": 13.16, "found": 71.97, "ratio": 39.0}, {"nama": "Tanggamus", "prelist": 230430, "pU": 57473, "pK": 172957, "ada": 66702, "td": 32893, "uTD": 18855, "kTD": 14038, "uAda": 3916, "kAda": 62786, "pctAda": 28.95, "pctTD": 14.27, "pctUTD": 32.81, "pctKTD": 8.12, "found": 66.97, "ratio": 49.3}, {"nama": "Tulang Bawang Barat", "prelist": 109078, "pU": 9436, "pK": 99642, "ada": 37122, "td": 13838, "uTD": 1886, "kTD": 11952, "uAda": 2422, "kAda": 34700, "pctAda": 34.03, "pctTD": 12.69, "pctUTD": 19.99, "pctKTD": 11.99, "found": 72.85, "ratio": 37.3}, {"nama": "Lampung Barat", "prelist": 97072, "pU": 11231, "pK": 85841, "ada": 35119, "td": 12088, "uTD": 4528, "kTD": 7560, "uAda": 1560, "kAda": 33559, "pctAda": 36.18, "pctTD": 12.45, "pctUTD": 40.32, "pctKTD": 8.81, "found": 74.39, "ratio": 34.4}, {"nama": "Pesisir Barat", "prelist": 47152, "pU": 4925, "pK": 42227, "ada": 17079, "td": 5569, "uTD": 2167, "kTD": 3402, "uAda": 930, "kAda": 16149, "pctAda": 36.22, "pctTD": 11.81, "pctUTD": 44.0, "pctKTD": 8.06, "found": 75.41, "ratio": 32.6}, {"nama": "Pesawaran", "prelist": 170544, "pU": 17312, "pK": 153232, "ada": 59130, "td": 19221, "uTD": 5140, "kTD": 14081, "uAda": 4221, "kAda": 54909, "pctAda": 34.67, "pctTD": 11.27, "pctUTD": 29.69, "pctKTD": 9.19, "found": 75.47, "ratio": 32.5}, {"nama": "Pringsewu", "prelist": 157837, "pU": 21252, "pK": 136585, "ada": 50836, "td": 14258, "uTD": 4622, "kTD": 9636, "uAda": 5153, "kAda": 45683, "pctAda": 32.21, "pctTD": 9.03, "pctUTD": 21.75, "pctKTD": 7.05, "found": 78.1, "ratio": 28.0}]};
-const P = DATA.prov, K = DATA.kab;
-const O='#ED6B23', TD='#D32F2F', ADA='#1B8A5A';
-const fmt=n=>n.toLocaleString('id-ID');
+const DATA={"prov": {"prelist": 3492079, "pU": 754653, "pK": 2737426, "uTD": 304084, "kTD": 312431, "uAda": 63548, "kAda": 879727, "didatapct": 50.71, "didata": 1770874, "td": 616515, "ada": 943275, "pctTD": 17.65, "pctAda": 27.01, "pctUTD": 40.29, "pctKTD": 11.41, "found": 60.47, "tdshare": 39.53}, "kab": [{"kode": "1871", "nama": "Bandar Lampung", "prelist": 410241, "pU": 130762, "pK": 279479, "ada": 82518, "td": 97766, "uTD": 49326, "kTD": 48440, "uAda": 6634, "kAda": 75884, "tutup": 28, "ganda": 17, "didata": 202576, "pctAda": 20.11, "pctTD": 23.83, "pctUTD": 37.72, "pctKTD": 17.33, "didatapct": 49.38, "found": 45.77, "tdshare": 54.23, "ratio": 118.5, "short": "B.Lampung"}, {"kode": "1806", "nama": "Lampung Utara", "prelist": 263314, "pU": 63918, "pK": 199396, "ada": 64024, "td": 58913, "uTD": 29632, "kTD": 29281, "uAda": 2715, "kAda": 61309, "tutup": 49, "ganda": 10, "didata": 135853, "pctAda": 24.31, "pctTD": 22.37, "pctUTD": 46.36, "pctKTD": 14.68, "didatapct": 51.59, "found": 52.08, "tdshare": 47.92, "ratio": 92.0, "short": "Lam.Utara"}, {"kode": "1807", "nama": "Way Kanan", "prelist": 187422, "pU": 41330, "pK": 146092, "ada": 50095, "td": 37281, "uTD": 21303, "kTD": 15978, "uAda": 2269, "kAda": 47826, "tutup": 12, "ganda": 3, "didata": 99831, "pctAda": 26.73, "pctTD": 19.89, "pctUTD": 51.54, "pctKTD": 10.94, "didatapct": 53.27, "found": 57.33, "tdshare": 42.67, "ratio": 74.4, "short": "Way Kanan"}, {"kode": "1805", "nama": "Lampung Tengah", "prelist": 580719, "pU": 131143, "pK": 449576, "ada": 144611, "td": 113751, "uTD": 64062, "kTD": 49689, "uAda": 9755, "kAda": 134856, "tutup": 94, "ganda": 72, "didata": 289234, "pctAda": 24.9, "pctTD": 19.59, "pctUTD": 48.85, "pctKTD": 11.05, "didatapct": 49.81, "found": 55.97, "tdshare": 44.03, "ratio": 78.7, "short": "Lam.Tengah"}, {"kode": "1808", "nama": "Tulang Bawang", "prelist": 154763, "pU": 18103, "pK": 136660, "ada": 38833, "td": 27437, "uTD": 7400, "kTD": 20037, "uAda": 2568, "kAda": 36265, "tutup": 14, "ganda": 1, "didata": 76775, "pctAda": 25.09, "pctTD": 17.73, "pctUTD": 40.88, "pctKTD": 14.66, "didatapct": 49.61, "found": 58.6, "tdshare": 41.4, "ratio": 70.7, "short": "Tuba"}, {"kode": "1803", "nama": "Lampung Selatan", "prelist": 436860, "pU": 94123, "pK": 342737, "ada": 120327, "td": 76446, "uTD": 40341, "kTD": 36105, "uAda": 6669, "kAda": 113658, "tutup": 61, "ganda": 12, "didata": 225450, "pctAda": 27.54, "pctTD": 17.5, "pctUTD": 42.86, "pctKTD": 10.53, "didatapct": 51.61, "found": 61.15, "tdshare": 38.85, "ratio": 63.5, "short": "Lam.Selatan"}, {"kode": "1804", "nama": "Lampung Timur", "prelist": 489946, "pU": 127105, "pK": 362841, "ada": 121307, "td": 82279, "uTD": 46543, "kTD": 35736, "uAda": 9841, "kAda": 111466, "tutup": 643, "ganda": 189, "didata": 233111, "pctAda": 24.76, "pctTD": 16.79, "pctUTD": 36.62, "pctKTD": 9.85, "didatapct": 47.58, "found": 59.59, "tdshare": 40.41, "ratio": 67.8, "short": "Lam.Timur"}, {"kode": "1872", "nama": "Metro", "prelist": 70494, "pU": 16347, "pK": 54147, "ada": 18519, "td": 10803, "uTD": 4954, "kTD": 5849, "uAda": 2395, "kAda": 16124, "tutup": 22, "ganda": 10, "didata": 33158, "pctAda": 26.27, "pctTD": 15.32, "pctUTD": 30.31, "pctKTD": 10.8, "didatapct": 47.04, "found": 63.16, "tdshare": 36.84, "ratio": 58.3, "short": "Metro"}, {"kode": "1811", "nama": "Mesuji", "prelist": 86207, "pU": 10193, "pK": 76014, "ada": 33553, "td": 13048, "uTD": 2927, "kTD": 10121, "uAda": 2209, "kAda": 31344, "tutup": 20, "ganda": 5, "didata": 53634, "pctAda": 38.92, "pctTD": 15.14, "pctUTD": 28.72, "pctKTD": 13.31, "didatapct": 62.22, "found": 72.0, "tdshare": 28.0, "ratio": 38.9, "short": "Mesuji"}, {"kode": "1802", "nama": "Tanggamus", "prelist": 230430, "pU": 57473, "pK": 172957, "ada": 67639, "td": 33296, "uTD": 19097, "kTD": 14199, "uAda": 3978, "kAda": 63661, "tutup": 52, "ganda": 12, "didata": 115161, "pctAda": 29.35, "pctTD": 14.45, "pctUTD": 33.23, "pctKTD": 8.21, "didatapct": 49.98, "found": 67.01, "tdshare": 32.99, "ratio": 49.2, "short": "Tanggamus"}, {"kode": "1812", "nama": "Tulang Bawang Barat", "prelist": 109078, "pU": 9436, "pK": 99642, "ada": 37625, "td": 13923, "uTD": 1895, "kTD": 12028, "uAda": 2461, "kAda": 35164, "tutup": 11, "ganda": 0, "didata": 59697, "pctAda": 34.49, "pctTD": 12.76, "pctUTD": 20.08, "pctKTD": 12.07, "didatapct": 54.73, "found": 72.99, "tdshare": 27.01, "ratio": 37.0, "short": "Tuba Barat"}, {"kode": "1801", "nama": "Lampung Barat", "prelist": 97072, "pU": 11231, "pK": 85841, "ada": 35357, "td": 12139, "uTD": 4539, "kTD": 7600, "uAda": 1570, "kAda": 33787, "tutup": 4, "ganda": 3, "didata": 55069, "pctAda": 36.42, "pctTD": 12.51, "pctUTD": 40.41, "pctKTD": 8.85, "didatapct": 56.73, "found": 74.44, "tdshare": 25.56, "ratio": 34.3, "short": "Lam.Barat"}, {"kode": "1813", "nama": "Pesisir Barat", "prelist": 47152, "pU": 4925, "pK": 42227, "ada": 17266, "td": 5606, "uTD": 2178, "kTD": 3428, "uAda": 944, "kAda": 16322, "tutup": 8, "ganda": 0, "didata": 25781, "pctAda": 36.62, "pctTD": 11.89, "pctUTD": 44.22, "pctKTD": 8.12, "didatapct": 54.68, "found": 75.49, "tdshare": 24.51, "ratio": 32.5, "short": "Pes.Barat"}, {"kode": "1809", "nama": "Pesawaran", "prelist": 170544, "pU": 17312, "pK": 153232, "ada": 60102, "td": 19404, "uTD": 5195, "kTD": 14209, "uAda": 4312, "kAda": 55790, "tutup": 33, "ganda": 5, "didata": 90653, "pctAda": 35.24, "pctTD": 11.38, "pctUTD": 30.01, "pctKTD": 9.27, "didatapct": 53.16, "found": 75.59, "tdshare": 24.41, "ratio": 32.3, "short": "Pesawaran"}, {"kode": "1810", "nama": "Pringsewu", "prelist": 157837, "pU": 21252, "pK": 136585, "ada": 51499, "td": 14423, "uTD": 4692, "kTD": 9731, "uAda": 5228, "kAda": 46271, "tutup": 34, "ganda": 4, "didata": 74891, "pctAda": 32.63, "pctTD": 9.14, "pctUTD": 22.08, "pctKTD": 7.12, "didatapct": 47.45, "found": 78.12, "tdshare": 21.88, "ratio": 28.0, "short": "Pringsewu"}], "tanggal": "14 Juli 2026"};
+const P=DATA.prov,K=DATA.kab;
+const O='#ED6B23',TD='#D32F2F',ADA='#1B8A5A';
+const fmt=n=>Math.round(n).toLocaleString('id-ID');
 const names=K.map(k=>k.nama);
-
-// KPI
 const $=id=>document.getElementById(id);
+$('tgl').textContent=DATA.tanggal;
 $('k-prelist').textContent=fmt(P.prelist);
 $('k-prelist-s').innerHTML='Usaha '+fmt(P.pU)+' &middot; Klg '+fmt(P.pK);
-$('k-ada').textContent=fmt(P.ada); $('k-ada-s').textContent=P.pctAda+'% dari prelist';
-$('k-td').textContent=fmt(P.td); $('k-td-s').textContent=P.pctTD+'% dari prelist';
+$('k-cap').textContent=P.didatapct+'%';$('k-cap-s').textContent=fmt(P.didata)+' responden didata';
+$('k-ada').textContent=fmt(P.ada);$('k-ada-s').textContent=P.pctAda+'% dari prelist';
+$('k-td').textContent=fmt(P.td);$('k-td-s').textContent=P.pctTD+'% dari prelist';
 $('k-found').textContent=P.found+'%';
 
-document.getElementById('keyalert').innerHTML=
- '<span class="big">&#9888; Akar masalah ada di prelist USAHA, bukan keluarga.</span>'+
- 'Secara provinsi, <b>'+P.pctUTD+'%</b> prelist usaha tidak ditemukan, sementara keluarga hanya <b>'+P.pctKTD+'%</b>. '+
- 'Dari total '+fmt(P.td)+' assignment tidak ditemukan, <b>'+fmt(P.uTD)+'</b> ('+Math.round(P.uTD/P.td*100)+'%) berasal dari usaha. '+
- 'Pola ini menandakan kegagalan pencocokan alamat direktori usaha (SBR/register), sehingga mitigasi utama adalah verifikasi &amp; perbaikan prelist usaha, bukan sekadar mendorong petugas.';
+$('keyalert').innerHTML=
+ '<span class="big">&#9888; Akar masalah di prelist USAHA + sinyal moral hazard di beberapa kab/kota.</span>'+
+ 'Secara provinsi <b>'+P.pctUTD+'%</b> prelist usaha tidak ditemukan (vs keluarga <b>'+P.pctKTD+'%</b>). '+
+ 'Dari seluruh hasil yang sudah selesai didata, <b>'+P.tdshare+'%</b> berstatus tidak ditemukan. '+
+ 'Bandar Lampung menjadi perhatian utama: TD ('+K.find(k=>k.nama=="Bandar Lampung").pctTD+'%) sudah melampaui yang ditemukan+baru ('+K.find(k=>k.nama=="Bandar Lampung").pctAda+'%), '+
+ 'dengan TD-share <b>'+K.find(k=>k.nama=="Bandar Lampung").tdshare+'%</b> &mdash; mayoritas hasil justru "tidak ditemukan", perlu verifikasi lapangan &amp; audit petugas.';
 
 Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
-Chart.defaults.font.size=11.5; Chart.defaults.color='#6B7683';
+Chart.defaults.font.size=11.5;Chart.defaults.color='#6B7683';
 Chart.register(ChartDataLabels);
 Chart.defaults.plugins.datalabels={display:false};
 
-// Chart 1: ranked % TD
-new Chart(c1,{type:'bar',data:{labels:names,datasets:[{
-  data:K.map(k=>k.pctTD),
-  backgroundColor:K.map(k=>k.pctTD>=P.pctTD?TD:'#F0A6A6'),
-  borderRadius:5,barPercentage:.82}]},
+// ---- Scatter zona ----
+const rScale=v=>Math.max(6,Math.sqrt(v)/26);
+const pts=K.map(k=>({x:k.didatapct,y:k.tdshare,r:rScale(k.prelist),k}));
+const avgX=P.didatapct, avgY=P.tdshare;
+new Chart(cScatter,{type:'bubble',data:{datasets:[{
+   data:pts,
+   backgroundColor:pts.map(p=>p.k.tdshare>=avgY?'rgba(211,47,47,.60)':'rgba(27,138,90,.55)'),
+   borderColor:pts.map(p=>p.k.tdshare>=avgY?'#B02020':'#127048'),borderWidth:1.5}]},
+ options:{responsive:true,maintainAspectRatio:false,
+  layout:{padding:{top:10,right:20}},
+  plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>{const k=c.raw.k;return [k.nama,'Capaian '+k.didatapct+'%  |  TD-share '+k.tdshare+'%','TD '+fmt(k.td)+'  |  Ada '+fmt(k.ada)+'  |  Prelist '+fmt(k.prelist)];}}},
+   datalabels:{display:true,align:'top',offset:4,color:'#37414D',font:{size:9,weight:'bold'},
+     formatter:(v,c)=>c.dataset.data[c.dataIndex].k.short}},
+  scales:{
+   x:{title:{display:true,text:'Capaian pendataan (% responden didata) →'},min:44,max:66,grid:{color:'#EEF1F4'},ticks:{callback:v=>v+'%'}},
+   y:{title:{display:true,text:'Tingkat Tidak Ditemukan dari hasil didata (%) →'},min:18,max:60,grid:{color:'#EEF1F4'},ticks:{callback:v=>v+'%'}}}},
+ plugins:[{id:'zones',beforeDraw:ch=>{const{ctx,chartArea:a,scales:{x,y}}=ch;const py=y.getPixelForValue(avgY),px=x.getPixelForValue(avgX);
+   ctx.save();
+   ctx.fillStyle='rgba(211,47,47,.055)';ctx.fillRect(a.left,a.top,a.right-a.left,py-a.top);
+   ctx.fillStyle='rgba(27,138,90,.05)';ctx.fillRect(a.left,py,a.right-a.left,a.bottom-py);
+   ctx.setLineDash([6,4]);ctx.strokeStyle='#9AA2AB';ctx.lineWidth=1.3;
+   ctx.beginPath();ctx.moveTo(px,a.top);ctx.lineTo(px,a.bottom);ctx.stroke();
+   ctx.beginPath();ctx.moveTo(a.left,py);ctx.lineTo(a.right,py);ctx.stroke();
+   ctx.setLineDash([]);ctx.font='700 10px Segoe UI';ctx.fillStyle='#C0392B';ctx.textAlign='left';
+   ctx.fillText('TD tinggi — zona audit',a.left+8,a.top+14);
+   ctx.fillStyle='#1B8A5A';ctx.fillText('TD rendah — zona sehat',a.left+8,a.bottom-8);
+   ctx.fillStyle='#7A828C';ctx.textAlign='right';ctx.fillText('rata-rata prov '+avgX+'%',px-5,a.bottom-6);
+   ctx.restore();}}]});
+
+// ---- Chart 1 ranked %TD ----
+new Chart(c1,{type:'bar',data:{labels:names,datasets:[{data:K.map(k=>k.pctTD),
+  backgroundColor:K.map(k=>k.pctTD>=P.pctTD?TD:'#F0A6A6'),borderRadius:5,barPercentage:.82}]},
  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false},
    tooltip:{callbacks:{label:c=>' TD '+c.parsed.x+'% ('+fmt(K[c.dataIndex].td)+' assignment)'}},
    datalabels:{display:true,anchor:'end',align:'end',offset:2,
-     color:c=>K[c.dataIndex].pctTD>=P.pctTD?'#B02020':'#8A6D5F',
-     font:{size:10.5,weight:'bold'},formatter:v=>v+'%'}},
-  scales:{x:{title:{display:true,text:'% Tidak Ditemukan terhadap prelist'},grid:{color:'#EEF1F4'},suggestedMax:27},
-          y:{grid:{display:false}}}},
- plugins:[{afterDraw:ch=>{const {ctx,scales:{x,y}}=ch;const px=x.getPixelForValue(P.pctTD);
+     color:c=>K[c.dataIndex].pctTD>=P.pctTD?'#B02020':'#8A6D5F',font:{size:10.5,weight:'bold'},formatter:v=>v+'%'}},
+  scales:{x:{title:{display:true,text:'% Tidak Ditemukan terhadap prelist'},grid:{color:'#EEF1F4'},suggestedMax:28},y:{grid:{display:false}}}},
+ plugins:[{afterDraw:ch=>{const{ctx,scales:{x,y}}=ch;const px=x.getPixelForValue(P.pctTD);
    ctx.save();ctx.strokeStyle='#7A828C';ctx.setLineDash([5,4]);ctx.lineWidth=1.4;
    ctx.beginPath();ctx.moveTo(px,y.top);ctx.lineTo(px,y.bottom);ctx.stroke();
    ctx.setLineDash([]);ctx.fillStyle='#4A525C';ctx.font='bold 11px Segoe UI';ctx.textAlign='left';
    ctx.fillText('Prov '+P.pctTD+'%',px+5,y.top+12);ctx.restore();}}]});
 
-// Chart 2: Ada vs TD grouped
+// ---- Chart 2 Ada vs TD ----
 new Chart(c2,{type:'bar',data:{labels:names,datasets:[
   {label:'Ada di Lapangan (D+B)',data:K.map(k=>k.pctAda),backgroundColor:ADA,borderRadius:4},
   {label:'Tidak Ditemukan',data:K.map(k=>k.pctTD),backgroundColor:TD,borderRadius:4}]},
  options:{responsive:true,maintainAspectRatio:false,
   plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:16}},
-   tooltip:{callbacks:{afterBody:items=>{const k=K[items[0].dataIndex];
-     return 'Rasio TD:100 Ada = '+k.ratio;}}},
+   tooltip:{callbacks:{afterBody:it=>'Rasio TD:100 Ada = '+K[it[0].dataIndex].ratio}},
    datalabels:{display:true,anchor:'end',align:'end',offset:1,rotation:-90,
-     color:c=>c.datasetIndex===0?'#14663F':'#A31F1F',
-     font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
+     color:c=>c.datasetIndex===0?'#14663F':'#A31F1F',font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{grid:{display:false},ticks:{maxRotation:55,minRotation:55}},
           y:{title:{display:true,text:'% terhadap prelist awal'},grid:{color:'#EEF1F4'},grace:'14%'}}}});
 
-// Chart 3: TD usaha vs keluarga
+// ---- Chart 3 TD usaha vs kel ----
 new Chart(c3,{type:'bar',data:{labels:names,datasets:[
   {label:'% TD Usaha',data:K.map(k=>k.pctUTD),backgroundColor:O,borderRadius:4},
   {label:'% TD Keluarga',data:K.map(k=>k.pctKTD),backgroundColor:'#F6C7A6',borderRadius:4}]},
  options:{responsive:true,maintainAspectRatio:false,
   plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:14}},
    datalabels:{display:c=>c.dataset.data[c.dataIndex]>=2,anchor:'end',align:'end',offset:1,rotation:-90,
-     color:c=>c.datasetIndex===0?'#B5531C':'#9A6B45',
-     font:{size:8.5,weight:'bold'},formatter:v=>v+'%'}},
+     color:c=>c.datasetIndex===0?'#B5531C':'#9A6B45',font:{size:8.5,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{grid:{display:false},ticks:{maxRotation:60,minRotation:60,font:{size:10}}},
           y:{title:{display:true,text:'% tidak ditemukan'},grid:{color:'#EEF1F4'},grace:'18%'}}}});
 
-// Chart 4: found rate 100% stacked
+// ---- Chart 4 found rate ----
 const s4=[...K].sort((a,b)=>a.found-b.found);
 new Chart(c4,{type:'bar',data:{labels:s4.map(k=>k.nama),datasets:[
   {label:'Real ada di lapangan',data:s4.map(k=>k.found),backgroundColor:ADA,borderRadius:3,stack:'s'},
@@ -203,29 +224,29 @@ new Chart(c4,{type:'bar',data:{labels:s4.map(k=>k.nama),datasets:[
   plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',padding:12,font:{size:10}}},
    tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.x+'%'}},
    datalabels:{display:c=>c.dataset.data[c.dataIndex]>=7,anchor:'center',align:'center',
-     color:c=>c.datasetIndex===0?'#fff':'#7A1F1F',
-     font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
+     color:c=>c.datasetIndex===0?'#fff':'#7A1F1F',font:{size:9,weight:'bold'},formatter:v=>v+'%'}},
   scales:{x:{max:100,stacked:true,grid:{color:'#EEF1F4'},ticks:{callback:v=>v+'%'}},
           y:{stacked:true,grid:{display:false},ticks:{font:{size:10}}}}}});
 
-// Table
-const risk=p=>p>=20?['p-hi','Kritis']:p>=15?['p-mid','Waspada']:['p-lo','Aman'];
+// ---- Table ----
+const risk=k=>k.tdshare>=45?['p-hi','Audit']:k.tdshare>=P.tdshare?['p-mid','Waspada']:['p-lo','Aman'];
 const tb=document.querySelector('#tbl tbody');
-K.forEach(k=>{const [cls,lab]=risk(k.pctTD);
- tb.insertAdjacentHTML('beforeend',
-  '<tr><td>'+k.nama+'</td><td>'+fmt(k.prelist)+'</td><td>'+fmt(k.ada)+'</td><td>'+k.pctAda+'%</td>'+
-  '<td>'+fmt(k.td)+'</td><td><b>'+k.pctTD+'%</b></td><td>'+k.pctUTD+'%</td><td>'+k.pctKTD+'%</td>'+
-  '<td>'+k.ratio+'</td><td><span class="pill '+cls+'">'+lab+'</span></td></tr>');});
+K.forEach(k=>{const[cls,lab]=risk(k);
+ tb.insertAdjacentHTML('beforeend','<tr><td>'+k.nama+'</td><td>'+fmt(k.prelist)+'</td><td>'+k.didatapct+'%</td>'+
+  '<td>'+fmt(k.ada)+'</td><td>'+k.pctAda+'%</td><td>'+fmt(k.td)+'</td><td><b>'+k.pctTD+'%</b></td>'+
+  '<td>'+k.tdshare+'%</td><td>'+k.pctUTD+'%</td><td><span class="pill '+cls+'">'+lab+'</span></td></tr>');});
 
-// Recommendations
-const kritis=K.filter(k=>k.pctTD>=20).map(k=>k.nama);
+// ---- Recommendations ----
+const bl=K.find(k=>k.nama=="Bandar Lampung");
+const zonaAudit=K.filter(k=>k.tdshare>=P.tdshare).map(k=>k.nama);
 const highU=[...K].sort((a,b)=>b.pctUTD-a.pctUTD).slice(0,3).map(k=>k.nama+' ('+k.pctUTD+'%)');
 const recos=[
- '<b>Prioritaskan '+(kritis.join(', ')||'kabupaten status Kritis')+'</b> yang % tidak ditemukannya di atas 20%. Turunkan tim supervisi lapangan untuk sampling ulang assignment TD sebelum cut-off.',
- '<b>Verifikasi prelist usaha</b> di kabupaten dengan TD usaha tertinggi: '+highU.join(', ')+'. Fokus pada pencocokan alamat direktori (SBR) &mdash; banyak "tidak ditemukan" kemungkinan karena alamat register tidak akurat, bukan usaha benar-benar hilang.',
- '<b>Bedakan penyebab TD.</b> Wajibkan pengawas mengklasifikasi ulang: (a) alamat prelist salah/tidak lengkap, (b) usaha pindah, (c) petugas belum optimal. Ini menentukan apakah solusinya perbaikan data atau penambahan effort lapangan.',
- '<b>Kontrol harian rasio TD:Ditemukan.</b> Kabupaten dengan rasio TD:100 Ada mendekati/di atas 100 (mis. Bandar Lampung '+K.find(k=>k.nama=="Bandar Lampung").ratio+') harus dievaluasi karena TD hampir menyamai yang ditemukan.',
- '<b>Pendataan masih berjalan.</b> Karena penyebut = prelist awal dan sebagian besar assignment belum didatangi, angka TD masih dapat berubah. Mitigasi dini menekan akumulasi TD saat sisa assignment dikerjakan.'
+ '<b>Audit lapangan Bandar Lampung lebih dulu.</b> Satu-satunya kab/kota yang TD ('+bl.pctTD+'%) sudah melampaui ditemukan+baru ('+bl.pctAda+'%), TD-share '+bl.tdshare+'%. Turunkan tim uji-petik: kunjungi ulang sampel acak assignment berstatus "tidak ditemukan" untuk memastikan benar-benar tidak ada &mdash; ini melindungi angka sensus sebelum terlanjur difinalkan.',
+ '<b>Turun ke level PPL di zona audit</b> ('+zonaAudit.join(', ')+'). Susun peringkat TD-rate per petugas; PPL dengan TD-rate jauh di atas rata-rata rekan dalam kecamatan/SLS yang sama adalah kandidat moral hazard yang wajib diklarifikasi PML. Data kabupaten hanya menunjuk lokasi &mdash; keputusan ada di level petugas.',
+ '<b>Cross-check jejak digital FASIH.</b> Tandai assignment TD yang: di-submit dengan selang waktu sangat singkat antar-assignment, tanpa titik GPS/foto, atau menumpuk pada satu petugas di satu hari. Pola ini membedakan TD sah dari TD "cepat tutup". Manfaatkan timestamp dan current_user pada data warehouse.',
+ '<b>Pisahkan strategi usaha vs keluarga.</b> TD usaha ('+P.pctUTD+'%) dominan &mdash; mayoritas karena alamat direktori (SBR) tidak akurat, solusinya perbaikan/verifikasi prelist, bukan menyalahkan petugas. Fokus verifikasi direktori di '+highU.join(', ')+'. TD keluarga ('+P.pctKTD+'%) lebih murni isu lapangan.',
+ '<b>Wajibkan re-konfirmasi PML sebelum approve.</b> Di kab/kota zona audit, setiap assignment TD harus diverifikasi ulang oleh pengawas (kunjungan/telepon) sebelum status difinalkan. Terapkan ambang kendali harian: PPL dengan TD-share melebihi rata-rata provinsi ('+P.tdshare+'%) masuk daftar prioritas periksa.',
+ '<b>Kejar capaian tanpa menaikkan TD.</b> Capaian provinsi baru '+P.didatapct+'%. Pastikan percepatan sisa assignment tidak dicapai dengan menambah "tidak ditemukan". Pantau tren harian TD-share per kab/kota &mdash; jika naik saat capaian dikebut, itu sinyal peringatan dini.'
 ];
 const ul=document.getElementById('reco');
 recos.forEach((r,i)=>ul.insertAdjacentHTML('beforeend','<li><span class="num">'+(i+1)+'</span><span>'+r+'</span></li>'));
