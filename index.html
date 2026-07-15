@@ -79,16 +79,7 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
   <div class="alert a-w" id="fenomena"></div>
   <div class="alert a-o" id="keyalert"></div>
 
-  <div class="section-title">1 &nbsp; Fenomena SLS Tertukar: Apakah "Tidak Ditemukan" Sudah Terganti Keluarga Baru?</div>
-  <div class="section-sub">Sumbu-X = rasio kompensasi (keluarga baru &divide; TD keluarga). Sumbu-Y = % TD keluarga terhadap prelist keluarga. Ukuran gelembung = jumlah keluarga yang <b>belum</b> terkompensasi (gap). Semakin ke kiri-atas = TD banyak tapi keluarga baru belum masuk &rarr; risiko keluarga hilang dari cacah bila lapangan ditutup.</div>
-  <div class="legend-zone">
-    <span><i style="background:#F6C6C6"></i> Risiko tinggi &mdash; kompensasi rendah, TD tinggi</span>
-    <span><i style="background:#FDEBC8"></i> Perlu dipantau</span>
-    <span><i style="background:#DFF0E6"></i> Relatif aman &mdash; keluarga baru menyusul</span>
-  </div>
-  <div class="card"><div class="chartbox xl"><canvas id="cSls"></canvas></div></div>
-
-  <div class="section-title">2 &nbsp; Zona Risiko: Capaian vs Tingkat Tidak Ditemukan</div>
+  <div class="section-title">1 &nbsp; Zona Risiko: Capaian vs Tingkat Tidak Ditemukan</div>
   <div class="section-sub">Sumbu-X = capaian pendataan. Sumbu-Y = TD-share (% tidak ditemukan dari hasil yang sudah selesai didata). Ukuran gelembung = besar prelist. Garis putus-putus = rata-rata provinsi.</div>
   <div class="legend-zone">
     <span><i style="background:#F6C6C6"></i> Zona audit &mdash; TD-share di atas rata-rata provinsi</span>
@@ -96,26 +87,35 @@ footer{color:var(--muted);font-size:11.5px;text-align:center;margin-top:34px;lin
   </div>
   <div class="card"><div class="chartbox xl"><canvas id="cScatter"></canvas></div></div>
 
-  <div class="section-title">3 &nbsp; Peringkat % Tidak Ditemukan terhadap Prelist Awal</div>
+  <div class="section-title">2 &nbsp; Peringkat % Tidak Ditemukan terhadap Prelist Awal</div>
   <div class="section-sub">Prioritas mitigasi. Garis putus-putus = rata-rata provinsi.</div>
   <div class="card"><div class="chartbox tall"><canvas id="c1"></canvas></div></div>
 
-  <div class="section-title">4 &nbsp; Perbandingan: Ada di Lapangan vs Tidak Ditemukan</div>
+  <div class="section-title">3 &nbsp; Perbandingan: Ada di Lapangan vs Tidak Ditemukan</div>
   <div class="section-sub">Keduanya sebagai % terhadap prelist awal. Sisanya = assignment yang belum selesai didatangi.</div>
   <div class="card"><div class="chartbox tall"><canvas id="c2"></canvas></div></div>
 
   <div class="grid2" style="margin-top:20px">
     <div class="card">
-      <h3>5 &nbsp; Akar Masalah: TD Usaha vs TD Keluarga</h3>
+      <h3>4 &nbsp; Akar Masalah: TD Usaha vs TD Keluarga</h3>
       <div class="cap">% tidak ditemukan terhadap prelist masing-masing. TD usaha jauh lebih tinggi &rarr; indikasi kegagalan pencocokan alamat direktori usaha (SBR).</div>
       <div class="chartbox"><canvas id="c3"></canvas></div>
     </div>
     <div class="card">
-      <h3>6 &nbsp; TD Keluarga vs Keluarga Baru yang Sudah Masuk</h3>
+      <h3>5 &nbsp; TD Keluarga vs Keluarga Baru yang Sudah Masuk</h3>
       <div class="cap">Batang merah = TD keluarga, batang biru = keluarga baru. Selisihnya adalah keluarga yang belum terkompensasi &mdash; inilah beban kerja tersisa akibat SLS tertukar.</div>
       <div class="chartbox"><canvas id="c5"></canvas></div>
     </div>
   </div>
+
+  <div class="section-title">6 &nbsp; Fenomena SLS Tertukar: Apakah "Tidak Ditemukan" Sudah Terganti Keluarga Baru?</div>
+  <div class="section-sub">Sumbu-X = rasio kompensasi (keluarga baru &divide; TD keluarga). Sumbu-Y = % TD keluarga terhadap prelist keluarga. Ukuran gelembung = jumlah keluarga yang <b>belum</b> terkompensasi (gap). Semakin ke kiri-atas = TD banyak tapi keluarga baru belum masuk &rarr; risiko keluarga hilang dari cacah bila lapangan ditutup.</div>
+  <div class="legend-zone">
+    <span><i style="background:#F6C6C6"></i> Risiko tinggi &mdash; kompensasi rendah, TD tinggi</span>
+    <span><i style="background:#FDEBC8"></i> Perlu dipantau</span>
+    <span><i style="background:#DFF0E6"></i> Relatif aman &mdash; keluarga baru menyusul</span>
+  </div>
+  <div class="card"><div class="chartbox xl"><canvas id="cSls"></canvas></div></div>
 
   <div class="section-title">7 &nbsp; Tabel Rekap, Gap Kompensasi &amp; Status Risiko</div>
   <div class="section-sub">Diurutkan dari % Tidak Ditemukan tertinggi. Gap = TD keluarga &minus; keluarga baru (keluarga berisiko hilang dari cacah bila proses penambahan tidak selesai).</div>
